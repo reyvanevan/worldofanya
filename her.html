@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Her | The Muse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { pink: '#FCE7F3', accent: '#db2777' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 transition-colors duration-300">
+
+    <!-- HEADER (Sama kayak index, tapi menu 'Her' aktif) -->
+    <header
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-100 dark:border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html" class="font-serif text-xl font-bold">World of Anya</a>
+            <nav class="hidden md:flex gap-6 text-sm font-medium uppercase tracking-wider">
+                <a href="index.html" class="hover:text-brand-accent">Our Story</a>
+                <a href="her.html" class="text-brand-accent">Her</a>
+                <a href="him.html" class="hover:text-brand-accent">Him</a>
+                <a href="us.html" class="hover:text-brand-accent">Us</a>
+            </nav>
+            <!-- Mobile Menu Button Simpel -->
+            <a href="index.html" class="md:hidden p-2"><i data-lucide="arrow-left" class="w-5 h-5"></i></a>
+        </div>
+    </header>
+
+    <main class="pt-20 pb-10 px-4 max-w-4xl mx-auto">
+
+        <!-- Profile Header -->
+        <div class="text-center mb-12 animate-fade-in">
+            <div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-dashed border-brand-accent mb-4">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                    alt="Anya" class="w-full h-full rounded-full object-cover">
+            </div>
+            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white">Zalfa Nazhifah</h1>
+            <p class="text-brand-accent text-sm uppercase tracking-widest mt-1">The Main Character</p>
+            <p class="mt-4 max-w-md mx-auto text-slate-500 italic">
+                "She is the poem I never knew how to write, and this life is the paper."
+            </p>
+        </div>
+
+        <!-- Small Details Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div
+                class="bg-white dark:bg-slate-900 p-4 rounded-2xl text-center shadow-sm border border-slate-100 dark:border-slate-800">
+                <i data-lucide="cake" class="w-6 h-6 mx-auto text-pink-400 mb-2"></i>
+                <p class="text-xs uppercase text-slate-400">Born In</p>
+                <p class="font-semibold text-slate-800 dark:text-white">July</p>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 p-4 rounded-2xl text-center shadow-sm border border-slate-100 dark:border-slate-800">
+                <i data-lucide="coffee" class="w-6 h-6 mx-auto text-amber-600 mb-2"></i>
+                <p class="text-xs uppercase text-slate-400">Loves</p>
+                <p class="font-semibold text-slate-800 dark:text-white">Matcha</p>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 p-4 rounded-2xl text-center shadow-sm border border-slate-100 dark:border-slate-800">
+                <i data-lucide="music" class="w-6 h-6 mx-auto text-purple-500 mb-2"></i>
+                <p class="text-xs uppercase text-slate-400">Vibe</p>
+                <p class="font-semibold text-slate-800 dark:text-white">R&B</p>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 p-4 rounded-2xl text-center shadow-sm border border-slate-100 dark:border-slate-800">
+                <i data-lucide="heart" class="w-6 h-6 mx-auto text-red-500 mb-2"></i>
+                <p class="text-xs uppercase text-slate-400">Status</p>
+                <p class="font-semibold text-slate-800 dark:text-white">Mine</p>
+            </div>
+        </div>
+
+        <!-- Her Gallery (Masonry Style) -->
+        <h2 class="font-serif text-xl font-bold mb-6 border-l-4 border-brand-accent pl-4">Captured Moments</h2>
+        <div class="columns-2 md:columns-3 gap-4 space-y-4">
+            <!-- Foto 1 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80" class="w-full">
+                <div
+                    class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-medium">
+                    Candid cantik
+                </div>
+            </div>
+            <!-- Foto 2 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative">
+                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80" class="w-full">
+            </div>
+            <!-- Foto 3 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative">
+                <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&q=80" class="w-full">
+            </div>
+            <!-- Foto 4 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative">
+                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&q=80" class="w-full">
+            </div>
+        </div>
+
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
