@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Him | The Observer</title>
+
+    <!-- Load CSS Modular -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Fonts & AOS CSS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Scripts Pre-Load -->
+    <script src="js/config.js"></script> <!-- Config Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-blue selection:text-brand-dark">
+
+    <!-- NAVBAR HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300" id="main-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+
+                <!-- Logo / Brand -->
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <i data-lucide="globe-2" class="w-6 h-6 text-blue-600 dark:text-blue-400 animate-spin-slow"></i>
+                    <span
+                        class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
+                        World of <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Anya</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors text-sm uppercase tracking-wider">Our
+                        Story</a>
+                    <a href="her.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-pink-500 dark:hover:text-pink-400 font-medium transition-colors text-sm uppercase tracking-wider">Her</a>
+                    <a href="him.html"
+                        class="text-blue-600 dark:text-blue-400 font-bold transition-colors text-sm uppercase tracking-wider">Him</a>
+                    <a href="us.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-purple-500 dark:hover:text-purple-400 font-medium transition-colors text-sm uppercase tracking-wider">Us</a>
+
+                    <!-- Divider -->
+                    <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()"
+                        class="text-slate-600 dark:text-slate-300 hover:text-blue-600 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800">Our
+                    Story</a>
+                <a href="her.html"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-pink-500 hover:bg-pink-50 dark:hover:bg-slate-800">Her
+                    Moments</a>
+                <a href="him.html"
+                    class="block px-3 py-3 rounded-md text-base font-bold text-blue-600 bg-blue-50 dark:bg-slate-800/50">Him
+                    Moments</a>
+                <a href="us.html"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-purple-500 hover:bg-purple-50 dark:hover:bg-slate-800">Just
+                    Us</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-10 px-4 max-w-4xl mx-auto">
+
+        <!-- Profile Header -->
+        <div class="text-center mb-8" data-aos="fade-down">
+            <div
+                class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-blue-400 mb-4 relative group cursor-pointer">
+                <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
+                <!-- Ganti foto profil lu di sini -->
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                    alt="Him"
+                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0">
+            </div>
+
+            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Reyvan Evan</h1>
+            <p class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
+
+            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
+                "I see the universe in your eyes, and my only job is to protect it."
+            </p>
+        </div>
+
+        <!-- HIGHLIGHTS SECTION -->
+        <div class="flex gap-4 md:gap-8 overflow-x-auto py-4 mb-6 justify-start md:justify-center no-scrollbar px-2 relative z-10"
+            data-aos="fade-up" data-aos-delay="50">
+
+            <!-- Highlight: Her (Folder khusus foto dia) -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-rose-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="camera" class="w-6 h-6 text-pink-500"></i>
+                    </div>
+                </div>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Her</span>
+            </div>
+
+            <!-- Highlight: Work/Grind -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-700 to-slate-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="briefcase" class="w-6 h-6 text-slate-600 dark:text-slate-400"></i>
+                    </div>
+                </div>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Grind</span>
+            </div>
+
+            <!-- Highlight: Tech/Hobby -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-500 to-cyan-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="cpu" class="w-6 h-6 text-blue-500"></i>
+                    </div>
+                </div>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Tech</span>
+            </div>
+
+            <!-- Highlight: Music -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-green-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="headphones" class="w-6 h-6 text-emerald-500"></i>
+                    </div>
+                </div>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Vibe</span>
+            </div>
+        </div>
+
+        <!-- INFO GRID (Toned Down) -->
+        <div class="grid grid-cols-4 gap-2 md:gap-4 mb-12 opacity-70 hover:opacity-100 transition-opacity duration-300"
+            data-aos="fade-up" data-aos-delay="100">
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="shield" class="w-4 h-4 mx-auto text-blue-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Role</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Guardian</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="star" class="w-4 h-4 mx-auto text-yellow-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Fav</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">You</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="gamepad-2" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Hobby</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Game</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="lock" class="w-4 h-4 mx-auto text-red-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Taken</p>
+            </div>
+        </div>
+
+        <!-- Gallery Title -->
+        <div class="mb-6 flex items-center gap-4 px-2" data-aos="fade-right">
+            <i data-lucide="aperture" class="w-4 h-4 text-slate-400"></i>
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Through My Lens</span>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+        </div>
+
+        <!-- Gallery (Masonry) -->
+        <div class="columns-2 md:columns-3 gap-4 space-y-4">
+            <!-- Photo 1 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up">
+                <img src="https://images.unsplash.com/photo-1488161628813-99c974c76949?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+                <div
+                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                    <span class="text-white font-serif text-xs italic">My View</span>
+                </div>
+            </div>
+            <!-- Photo 2 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
+                data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+            </div>
+            <!-- Photo 3 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
+                data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+            </div>
+        </div>
+
+    </main>
+
+    <footer
+        class="py-8 text-center text-slate-400 text-xs tracking-widest uppercase border-t border-slate-200 dark:border-slate-800 transition-colors">
+        <p>Built with ❤️ for Anya • 2025</p>
+    </footer>
+
+    <!-- Load JS Modular (Di bawah biar halaman tampil dulu) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
