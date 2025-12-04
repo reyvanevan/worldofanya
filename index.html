@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth overflow-x-hidden">
 
 <head>
     <meta charset="UTF-8">
@@ -50,21 +50,24 @@
     </script>
 
     <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+        /* Custom Scrollbar - Desktop Only */
+        @media (min-width: 768px) {
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
 
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
+            ::-webkit-scrollbar-thumb {
+                background: #cbd5e1;
+                border-radius: 4px;
+            }
 
-        .dark ::-webkit-scrollbar-thumb {
-            background: #334155;
+            .dark ::-webkit-scrollbar-thumb {
+                background: #334155;
+            }
         }
 
         .glass-card {
