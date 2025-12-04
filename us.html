@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Us | Our Journey</title>
+
+    <!-- Load CSS Modular -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Fonts & AOS CSS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Scripts Pre-Load -->
+    <script src="js/config.js"></script> <!-- Config Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-accent selection:text-white">
+
+    <!-- NAVBAR HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300" id="main-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+
+                <!-- Logo / Brand -->
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <i data-lucide="globe-2"
+                        class="w-6 h-6 text-brand-accent dark:text-brand-accentLight animate-spin-slow"></i>
+                    <span
+                        class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
+                        World of <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Anya</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Our
+                        Story</a>
+                    <a href="her.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Her</a>
+                    <a href="him.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Him</a>
+                    <a href="us.html"
+                        class="text-brand-accent dark:text-brand-accentLight font-bold transition-colors text-sm uppercase tracking-wider">Us</a>
+
+                    <!-- Divider -->
+                    <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()"
+                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Our
+                    Story</a>
+                <a href="her.html"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Her
+                    Moments</a>
+                <a href="him.html"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Him
+                    Moments</a>
+                <a href="us.html"
+                    class="block px-3 py-3 rounded-md text-base font-bold text-brand-accent bg-pink-50 dark:bg-slate-800/50">Just
+                    Us</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-20 px-4">
+
+        <!-- Page Header -->
+        <div class="max-w-xl mx-auto text-center mb-10" data-aos="fade-down">
+            <h1 class="font-serif text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-2">Our Timeline</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">Every second with you is a memory I want to keep.</p>
+        </div>
+
+        <!-- TIMELINE FEED CONTAINER -->
+        <div class="max-w-lg mx-auto space-y-8">
+
+            <!-- Post 1: Pinned / Special -->
+            <article
+                class="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300 relative"
+                data-aos="fade-up">
+                <!-- Pinned Indicator -->
+                <div class="absolute top-4 right-4 z-10 bg-white/30 dark:bg-black/30 backdrop-blur-md p-1.5 rounded-full text-brand-accent dark:text-brand-accentLight"
+                    title="Pinned Post">
+                    <i data-lucide="pin" class="w-4 h-4 fill-current"></i>
+                </div>
+
+                <!-- Post Header -->
+                <div class="p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-400 to-purple-500 p-[2px]">
+                            <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 overflow-hidden">
+                                <img src="https://ui-avatars.com/api/?name=Us&background=random" alt="Us"
+                                    class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800 dark:text-white">Rey & Anya</h3>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wide">The Beginning</p>
+                        </div>
+                    </div>
+                    <button class="text-slate-400 hover:text-brand-accent"><i data-lucide="more-horizontal"
+                            class="w-5 h-5"></i></button>
+                </div>
+
+                <!-- Post Image -->
+                <div class="relative aspect-[4/5] bg-slate-100 dark:bg-slate-800 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        alt="Our First Date"
+                        class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+
+                    <!-- Like Animation Overlay (Optional) -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black/10">
+                        <i data-lucide="heart"
+                            class="w-16 h-16 text-white fill-white drop-shadow-lg scale-0 group-hover:scale-100 transition-transform duration-300 delay-100"></i>
+                    </div>
+                </div>
+
+                <!-- Post Actions -->
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-4">
+                            <button class="hover:scale-110 transition-transform"><i data-lucide="heart"
+                                    class="w-6 h-6 text-brand-accent fill-brand-accent"></i></button>
+                            <button class="hover:scale-110 transition-transform"><i data-lucide="message-circle"
+                                    class="w-6 h-6 text-slate-600 dark:text-slate-300"></i></button>
+                            <button class="hover:scale-110 transition-transform"><i data-lucide="send"
+                                    class="w-6 h-6 text-slate-600 dark:text-slate-300"></i></button>
+                        </div>
+                        <button class="hover:scale-110 transition-transform"><i data-lucide="bookmark"
+                                class="w-6 h-6 text-slate-600 dark:text-slate-300"></i></button>
+                    </div>
+
+                    <!-- Likes Count -->
+                    <p class="text-sm font-bold text-slate-800 dark:text-white mb-2">You and Anya like this</p>
+
+                    <!-- Caption -->
+                    <div class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <span class="font-bold text-slate-800 dark:text-white mr-1">Rey & Anya</span>
+                        Hari pertama kita ketemu. Canggung banget tapi lucu kalau diinget-inget sekarang. <span
+                            class="text-blue-500">#FirstDate</span> <span class="text-blue-500">#Memories</span>
+                    </div>
+
+                    <!-- Date -->
+                    <p class="text-[10px] text-slate-400 mt-3 uppercase tracking-widest">24 July 2024</p>
+                </div>
+            </article>
+
+            <!-- Post 2: Text Only / Quote -->
+            <article class="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                data-aos="fade-up">
+                <div class="p-4 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                        <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-800 dark:text-white">Rey's Note</h3>
+                        <p class="text-[10px] text-slate-400">Just now</p>
+                    </div>
+                </div>
+
+                <div
+                    class="p-8 bg-gradient-to-br from-brand-pink/20 to-brand-blue/20 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center min-h-[200px] text-center">
+                    <p class="font-serif text-xl italic text-slate-700 dark:text-slate-200 leading-relaxed">
+                        "Distance means so little when someone means so much."
+                    </p>
+                </div>
+
+                <div class="p-4 bg-white/50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800/50">
+                    <p class="text-xs text-center text-slate-500">Missing you extra today.</p>
+                </div>
+            </article>
+
+            <!-- Post 3: Photo Gallery -->
+            <article class="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                data-aos="fade-up">
+                <div class="p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden">
+                            <img src="https://ui-avatars.com/api/?name=Us&background=random" alt="Us">
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800 dark:text-white">Rey & Anya</h3>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wide">Random Moments</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover">
+                </div>
+
+                <div class="p-4">
+                    <div class="flex items-center gap-4 mb-3">
+                        <i data-lucide="heart"
+                            class="w-6 h-6 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"></i>
+                        <i data-lucide="message-circle" class="w-6 h-6 text-slate-400"></i>
+                    </div>
+                    <div class="text-sm text-slate-600 dark:text-slate-300">
+                        <span class="font-bold text-slate-800 dark:text-white mr-1">Rey & Anya</span>
+                        Foto-foto random kita pas lagi gabut. Muka kamu lucu banget di sini haha.
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-3 uppercase tracking-widest">1 Week Ago</p>
+                </div>
+            </article>
+
+            <!-- End of Timeline -->
+            <div class="text-center py-8 text-slate-400">
+                <div class="w-2 h-2 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mb-2"></div>
+                <p class="text-xs">You're all caught up!</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer
+        class="py-8 text-center text-slate-400 text-xs tracking-widest uppercase border-t border-slate-200 dark:border-slate-800 transition-colors">
+        <p>Built with ❤️ for Anya • 2025</p>
+    </footer>
+
+    <!-- Floating Action Button (Optional: For adding new post later) -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button
+            class="bg-brand-accent hover:bg-pink-600 text-white p-4 rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 group"
+            title="New Memory">
+            <i data-lucide="plus" class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300"></i>
+        </button>
+    </div>
+
+    <!-- Load JS Modular -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
