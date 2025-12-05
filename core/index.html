@@ -110,7 +110,7 @@
     <div class="flex min-h-screen relative">
 
         <!-- SIDEBAR -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 sidebar-glass transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:flex flex-col h-screen sticky top-0">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 sidebar-glass transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:flex flex-col md:h-screen md:sticky md:top-0 overflow-y-auto">
             
             <!-- Sidebar Header -->
             <div class="h-20 flex items-center justify-between px-6 border-b border-slate-200/50 dark:border-slate-700/50">
@@ -182,17 +182,23 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="flex-1 w-full md:w-auto p-4 md:p-8 space-y-8 overflow-x-hidden">
+        <main class="flex-1 w-full md:w-auto p-3 md:p-8 space-y-6 md:space-y-8 overflow-x-hidden">
             
             <!-- Mobile Header -->
-            <div class="md:hidden flex justify-between items-center mb-6 glass-card p-4 rounded-xl sticky top-4 z-20">
+            <div class="md:hidden flex justify-between items-center mb-4 glass-card p-3 rounded-xl sticky top-4 z-20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="layout-dashboard" class="w-5 h-5 text-brand-accent"></i>
-                    <span class="font-serif font-bold text-lg">Dashboard</span>
+                    <span class="font-serif font-bold text-base">Dashboard</span>
                 </div>
-                <button onclick="toggleSidebar()" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleTheme()" class="p-2 rounded-full bg-white/50 dark:bg-slate-800/50 hover:scale-105 transition-transform">
+                        <i data-lucide="sun" class="w-4 h-4 text-amber-400 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-4 h-4 text-slate-600 block dark:hidden"></i>
+                    </button>
+                    <button onclick="toggleSidebar()" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Desktop Header -->
@@ -214,43 +220,43 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="overview">
-                <div class="glass-card p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6" id="overview">
+                <div class="glass-card p-4 md:p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
                     <div>
-                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Visits</p>
-                        <h3 class="text-3xl font-bold text-slate-800 dark:text-white">1,240</h3>
+                        <p class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Visits</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">1,240</h3>
                         <p class="text-xs text-green-500 flex items-center gap-1 mt-2">
                             <i data-lucide="trending-up" class="w-3 h-3"></i> +12% this week
                         </p>
                     </div>
-                    <div class="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-2xl text-blue-500 group-hover:scale-110 transition-transform">
-                        <i data-lucide="eye" class="w-8 h-8"></i>
+                    <div class="p-3 md:p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl md:rounded-2xl text-blue-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="eye" class="w-6 h-6 md:w-8 md:h-8"></i>
                     </div>
                 </div>
                 
-                <div class="glass-card p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card p-4 md:p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="200">
                     <div>
-                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Memories Stored</p>
-                        <h3 class="text-3xl font-bold text-slate-800 dark:text-white">42</h3>
+                        <p class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Memories Stored</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">42</h3>
                         <p class="text-xs text-pink-500 flex items-center gap-1 mt-2">
                             <i data-lucide="plus" class="w-3 h-3"></i> 3 new today
                         </p>
                     </div>
-                    <div class="p-4 bg-pink-50 dark:bg-pink-900/30 rounded-2xl text-pink-500 group-hover:scale-110 transition-transform">
-                        <i data-lucide="heart" class="w-8 h-8"></i>
+                    <div class="p-3 md:p-4 bg-pink-50 dark:bg-pink-900/30 rounded-xl md:rounded-2xl text-pink-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="heart" class="w-6 h-6 md:w-8 md:h-8"></i>
                     </div>
                 </div>
                 
-                <div class="glass-card p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="glass-card p-4 md:p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300 sm:col-span-2 md:col-span-1" data-aos="fade-up" data-aos-delay="300">
                     <div>
-                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Days Together</p>
-                        <h3 class="text-3xl font-bold text-slate-800 dark:text-white">186</h3>
+                        <p class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Days Together</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">186</h3>
                         <p class="text-xs text-purple-500 flex items-center gap-1 mt-2">
                             <i data-lucide="calendar" class="w-3 h-3"></i> Forever to go
                         </p>
                     </div>
-                    <div class="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-2xl text-purple-500 group-hover:scale-110 transition-transform">
-                        <i data-lucide="hourglass" class="w-8 h-8"></i>
+                    <div class="p-3 md:p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl md:rounded-2xl text-purple-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="hourglass" class="w-6 h-6 md:w-8 md:h-8"></i>
                     </div>
                 </div>
             </div>
@@ -262,15 +268,15 @@
                         <div class="p-2 bg-pink-100 dark:bg-pink-900/30 rounded-lg text-pink-500">
                             <i data-lucide="user" class="w-5 h-5"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Profile Section</h3>
+                        <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Profile Section</h3>
                     </div>
-                    <button class="px-4 py-2 bg-brand-accent hover:bg-pink-600 text-white text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 flex items-center gap-2">
+                    <button class="px-3 py-2 md:px-4 bg-brand-accent hover:bg-pink-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
                         <i data-lucide="save" class="w-4 h-4"></i> Save Changes
                     </button>
                 </div>
                 
-                <div class="p-8 grid md:grid-cols-3 gap-8">
-                    <div class="col-span-1">
+                <div class="p-4 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    <div class="md:col-span-1">
                         <label class="block text-sm font-bold mb-3 text-slate-700 dark:text-slate-300">Profile Photo</label>
                         <div class="relative group rounded-2xl overflow-hidden aspect-[3/4] border-4 border-white dark:border-slate-700 shadow-xl">
                             <img id="profilePreview" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
@@ -285,7 +291,7 @@
                         <p class="text-xs text-center text-slate-400 mt-3">Recommended: Portrait 3:4</p>
                     </div>
                     
-                    <div class="col-span-2 space-y-6">
+                    <div class="md:col-span-2 space-y-4 md:space-y-6">
                         <div>
                             <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Display Name</label>
                             <input type="text" value="Zalfa Nazhifah" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm">
@@ -298,7 +304,7 @@
                         
                         <div>
                             <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Highlight Tags</label>
-                            <div class="grid grid-cols-3 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div class="relative">
                                     <span class="absolute left-3 top-3 text-slate-400">#</span>
                                     <input type="text" value="BlueSoul" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
@@ -324,11 +330,11 @@
                         <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-500">
                             <i data-lucide="image" class="w-5 h-5"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Landing Gallery</h3>
+                        <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Landing Gallery</h3>
                     </div>
                 </div>
                 
-                <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="p-4 md:p-6 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                     <!-- Gallery Item 1 -->
                     <div class="relative group rounded-2xl overflow-hidden aspect-square border border-slate-200 dark:border-slate-700 shadow-md">
                         <img id="gal1" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
@@ -390,14 +396,14 @@
                         <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-500">
                             <i data-lucide="sparkles" class="w-5 h-5"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Immortalized Memories</h3>
+                        <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Immortalized Memories</h3>
                     </div>
                 </div>
 
-                <div class="p-6 space-y-6">
+                <div class="p-4 md:p-6 space-y-4 md:space-y-6">
                     <!-- Memory 1 -->
-                    <div class="flex flex-col md:flex-row gap-6 p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
-                        <div class="w-full md:w-40 h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
+                        <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
                             <img id="mem1" src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
                                 <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
@@ -418,8 +424,8 @@
                     </div>
 
                     <!-- Memory 2 -->
-                    <div class="flex flex-col md:flex-row gap-6 p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
-                        <div class="w-full md:w-40 h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
+                        <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
                             <img id="mem2" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
                                 <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
@@ -440,8 +446,8 @@
                     </div>
 
                     <!-- Memory 3 (Empty) -->
-                    <div class="flex flex-col md:flex-row gap-6 p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
-                        <div class="w-full md:w-40 h-32 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative group shrink-0 shadow-inner border-2 border-dashed border-slate-300 dark:border-slate-600">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
+                        <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative group shrink-0 shadow-inner border-2 border-dashed border-slate-300 dark:border-slate-600">
                             <span class="text-4xl text-slate-300 dark:text-slate-600 font-serif group-hover:scale-110 transition-transform">?</span>
                              </div>
                         <div class="flex-1 space-y-4">
