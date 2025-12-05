@@ -22,25 +22,43 @@ import { auth, db } from './firebase-config.js';
 
 // ==================== CONSTANTS ====================
 
+// Email to author mapping
+export const EMAIL_TO_AUTHOR = {
+    'reyvan@ganteng.com': 'rey',
+    'sayang@anya.com': 'anya'
+};
+
 // User profiles - sesuai UI yang ada
 export const USER_PROFILES = {
     rey: {
         id: 'rey',
-        name: 'Reyvan Evan',
+        name: 'M Reyvan Purnama',
         displayName: 'Rey',
+        email: 'reyvan@ganteng.com',
         role: 'The Observer',
         avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
         accentColor: 'blue'
     },
     anya: {
         id: 'anya',
-        name: 'Zalfa Nazhifah',
+        name: 'Anya',
         displayName: 'Anya',
+        email: 'sayang@anya.com',
         role: 'The Main Character',
         avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
         accentColor: 'pink'
     }
 };
+
+/**
+ * Get current author based on logged in user email
+ * @param {Object} user - Firebase Auth user object
+ * @returns {string} 'rey' or 'anya'
+ */
+export function getCurrentAuthor(user) {
+    if (!user || !user.email) return 'rey'; // default
+    return EMAIL_TO_AUTHOR[user.email.toLowerCase()] || 'rey';
+}
 
 // Post types
 export const POST_TYPES = {
