@@ -9,16 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <script type="module">
-        import { auth } from '../js/firebase-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = '../index.html';
-            }
-        });
-
+    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -36,6 +27,13 @@
                     }
                 }
             }
+        }
+        
+        // Check Theme early to prevent flash
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
         }
     </script>
 </head>
@@ -88,37 +86,66 @@
 
         <div class="space-y-4">
             <div class="flex gap-3">
-                <img src="https://ui-avatars.com/api/?name=Rey&background=0D8ABC&color=fff"
+                <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff"
                     class="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-700">
-                <textarea
+                <textarea id="captionInput"
                     class="w-full bg-transparent border-none focus:ring-0 text-slate-800 dark:text-slate-200 placeholder-slate-400 text-sm resize-none h-24 p-0 leading-relaxed"
                     placeholder="Write a caption... (e.g., 'Masih inget hari ini gak?')"></textarea>
             </div>
 
             <div class="h-px bg-slate-200 dark:bg-slate-800 w-full"></div>
 
+            <!-- Post Type Toggle -->
+            <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                <i data-lucide="layout" class="w-5 h-5"></i>
+                <div class="flex gap-2">
+                    <button type="button" id="typePhoto" onclick="setPostType('photo')"
+                        class="px-3 py-1.5 rounded-full text-xs font-medium bg-pink-500 text-white transition">📷 Photo</button>
+                    <button type="button" id="typeNote" onclick="setPostType('note')"
+                        class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 transition">📝 Note</button>
+                    <button type="button" id="typeStory" onclick="setPostType('story')"
+                        class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 transition">⏱️ Story</button>
+                </div>
+            </div>
+
             <div class="space-y-3">
                 <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                     <i data-lucide="map-pin" class="w-5 h-5"></i>
-                    <input type="text" placeholder="Add Location"
+                    <input type="text" id="locationInput" placeholder="Add Location"
                         class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400">
                 </div>
 
                 <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                     <i data-lucide="calendar" class="w-5 h-5"></i>
-                    <input type="date"
+                    <input type="date" id="dateInput"
                         class="bg-transparent border-none focus:ring-0 p-0 text-sm text-slate-500 dark:text-slate-400 font-sans w-full">
                 </div>
 
                 <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pt-2">
                     <i data-lucide="tag" class="w-5 h-5"></i>
-                    <div class="flex gap-2 overflow-x-auto no-scrollbar">
-                        <button type="button" onclick="toggleTag(this)"
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar" id="tagsContainer">
+                        <button type="button" data-tag="Dates" onclick="toggleTag(this)"
                             class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Dates</button>
-                        <button type="button" onclick="toggleTag(this)"
+                        <button type="button" data-tag="Trips" onclick="toggleTag(this)"
                             class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Trips</button>
-                        <button type="button" onclick="toggleTag(this)"
+                        <button type="button" data-tag="Food" onclick="toggleTag(this)"
+                            class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Food</button>
+                        <button type="button" data-tag="Silly" onclick="toggleTag(this)"
+                            class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Silly</button>
+                        <button type="button" data-tag="Random" onclick="toggleTag(this)"
                             class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Random</button>
+                    </div>
+                </div>
+                
+                <!-- Author Toggle (Rey / Anya) -->
+                <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pt-2">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span class="text-xs">Post as:</span>
+                    <div class="flex gap-2">
+                        <button type="button" id="authorRey" onclick="setAuthor('rey')"
+                            class="px-3 py-1 rounded-full text-xs font-medium bg-blue-500 text-white transition">Rey</button>
+                        <button type="button" id="authorAnya" onclick="setAuthor('anya')"
+                            class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 transition">Anya</button>
                     </div>
                 </div>
             </div>
@@ -149,13 +176,13 @@
                 </button>
             </div>
 
-            <a href="../him.html"
+            <a href="him.html"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition">
                 <i data-lucide="user" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Rey</span>
             </a>
 
-            <a href="../her.html"
+            <a href="her.html"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
                 <i data-lucide="heart" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Anya</span>
@@ -163,20 +190,36 @@
         </div>
     </nav>
 
+    <!-- Firebase Auth Check Module -->
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { createPost, createStory, compressImageToBase64, USER_PROFILES } from '../js/firestore-service.js';
+
+        // Check auth
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../index.html';
+            }
+        });
+
+        // Expose functions to window for onclick handlers
+        window.firestoreService = { createPost, createStory, compressImageToBase64, USER_PROFILES };
+    </script>
+
     <script>
         // Init Icons
         lucide.createIcons();
 
-        // Check Theme
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        // --- STATE ---
+        let currentPostType = 'photo'; // 'photo', 'note', 'story'
+        let currentAuthor = 'rey'; // 'rey' or 'anya'
+        let selectedTags = [];
+        let compressedImageBase64 = null;
 
         // --- UPLOAD LOGIC ---
-
-        function previewImage(event) {
+        
+        async function previewImage(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -191,46 +234,171 @@
                     removeBtn.classList.remove('hidden');
                 }
                 reader.readAsDataURL(file);
+                
+                // Compress image for storage
+                try {
+                    compressedImageBase64 = await window.firestoreService.compressImageToBase64(file);
+                    console.log('Image compressed, size:', Math.round(compressedImageBase64.length / 1024), 'KB');
+                } catch (err) {
+                    console.error('Failed to compress image:', err);
+                    alert('Failed to process image. Please try a smaller image.');
+                }
             }
         }
+        
+        // Make it globally accessible
+        window.previewImage = previewImage;
 
         function removeImage(event) {
-            event.preventDefault(); // Mencegah trigger input file lagi
+            event.preventDefault();
             const input = document.getElementById('fileInput');
             const img = document.getElementById('imagePreview');
             const placeholder = document.getElementById('uploadPlaceholder');
             const removeBtn = document.getElementById('removeBtn');
 
-            input.value = ''; // Reset input
+            input.value = '';
             img.src = '';
             img.classList.add('hidden');
             placeholder.classList.remove('hidden');
             removeBtn.classList.add('hidden');
+            compressedImageBase64 = null;
         }
+        
+        window.removeImage = removeImage;
 
         function toggleTag(btn) {
-            // Toggle style visual simple
+            const tag = btn.dataset.tag;
+            
             if (btn.classList.contains('bg-pink-500')) {
                 btn.classList.remove('bg-pink-500', 'text-white', 'border-transparent');
-                btn.classList.add('text-xs', 'border-slate-300');
+                btn.classList.add('border-slate-300', 'dark:border-slate-700');
+                selectedTags = selectedTags.filter(t => t !== tag);
             } else {
-                // Reset others (single select) or keep for multi select. Let's do toggle.
                 btn.classList.add('bg-pink-500', 'text-white', 'border-transparent');
-                btn.classList.remove('text-xs', 'border-slate-300');
+                btn.classList.remove('border-slate-300', 'dark:border-slate-700');
+                selectedTags.push(tag);
             }
         }
+        
+        window.toggleTag = toggleTag;
+        
+        function setPostType(type) {
+            currentPostType = type;
+            
+            // Update button styles
+            const types = ['Photo', 'Note', 'Story'];
+            types.forEach(t => {
+                const btn = document.getElementById('type' + t);
+                if (t.toLowerCase() === type) {
+                    btn.classList.add('bg-pink-500', 'text-white');
+                    btn.classList.remove('border', 'border-slate-300', 'dark:border-slate-700');
+                } else {
+                    btn.classList.remove('bg-pink-500', 'text-white');
+                    btn.classList.add('border', 'border-slate-300', 'dark:border-slate-700');
+                }
+            });
+            
+            // Show/hide image upload based on type
+            const dropZone = document.getElementById('dropZone');
+            if (type === 'note') {
+                dropZone.classList.add('hidden');
+            } else {
+                dropZone.classList.remove('hidden');
+            }
+        }
+        
+        window.setPostType = setPostType;
+        
+        function setAuthor(author) {
+            currentAuthor = author;
+            
+            // Update button styles
+            const reyBtn = document.getElementById('authorRey');
+            const anyaBtn = document.getElementById('authorAnya');
+            const avatar = document.getElementById('userAvatar');
+            
+            if (author === 'rey') {
+                reyBtn.classList.add('bg-blue-500', 'text-white');
+                reyBtn.classList.remove('border', 'border-slate-300', 'dark:border-slate-700');
+                anyaBtn.classList.remove('bg-pink-500', 'text-white');
+                anyaBtn.classList.add('border', 'border-slate-300', 'dark:border-slate-700');
+                avatar.src = window.firestoreService.USER_PROFILES.rey.avatarUrl;
+            } else {
+                anyaBtn.classList.add('bg-pink-500', 'text-white');
+                anyaBtn.classList.remove('border', 'border-slate-300', 'dark:border-slate-700');
+                reyBtn.classList.remove('bg-blue-500', 'text-white');
+                reyBtn.classList.add('border', 'border-slate-300', 'dark:border-slate-700');
+                avatar.src = window.firestoreService.USER_PROFILES.anya.avatarUrl;
+            }
+        }
+        
+        window.setAuthor = setAuthor;
 
-        function handlePost() {
+        async function handlePost() {
             const btn = document.getElementById('postBtn');
-            btn.innerHTML = 'Posting...';
+            const caption = document.getElementById('captionInput').value.trim();
+            const location = document.getElementById('locationInput').value.trim();
+            
+            // Validation
+            if (currentPostType !== 'note' && !compressedImageBase64) {
+                alert('Please add an image first!');
+                return;
+            }
+            
+            if (currentPostType === 'note' && !caption) {
+                alert('Please write something for your note!');
+                return;
+            }
+            
+            btn.innerHTML = '<span class="animate-pulse">Uploading...</span>';
             btn.disabled = true;
 
-            // Simulasi Upload
-            setTimeout(() => {
-                alert('Memory uploaded successfully! (Simulation)');
-                window.location.href = 'home.html';
-            }, 1500);
+            try {
+                if (currentPostType === 'story') {
+                    // Create story
+                    await window.firestoreService.createStory({
+                        imageBase64: compressedImageBase64,
+                        caption: caption,
+                        authorId: currentAuthor
+                    });
+                } else {
+                    // Create post (photo or note)
+                    await window.firestoreService.createPost({
+                        type: currentPostType,
+                        caption: caption,
+                        imageBase64: compressedImageBase64,
+                        location: location,
+                        tags: selectedTags,
+                        authorId: currentAuthor
+                    });
+                }
+                
+                // Success!
+                btn.innerHTML = '✓ Done!';
+                btn.classList.remove('text-pink-500');
+                btn.classList.add('text-green-500');
+                
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 800);
+                
+            } catch (error) {
+                console.error('Upload failed:', error);
+                alert('Upload failed: ' + error.message);
+                btn.innerHTML = 'Share';
+                btn.disabled = false;
+            }
         }
+        
+        window.handlePost = handlePost;
+        
+        // Initialize avatar on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatar = document.getElementById('userAvatar');
+            if (window.firestoreService?.USER_PROFILES) {
+                avatar.src = window.firestoreService.USER_PROFILES.rey.avatarUrl;
+            }
+        });
     </script>
 </body>
 
