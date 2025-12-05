@@ -16,10 +16,25 @@
     <script type="module">
         import { auth } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getCurrentAuthor } from '../js/firestore-service.js';
+
+        // Store current user globally
+        window.currentUserAuthor = null;
+        window.isOwner = false;
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = '../index.html';
+            } else {
+                window.currentUserAuthor = getCurrentAuthor(user);
+                // Check if current user is the profile owner (Rey)
+                window.isOwner = window.currentUserAuthor === 'rey';
+                
+                // Show archive section only if owner
+                if (window.isOwner) {
+                    document.getElementById('archiveSection').classList.remove('hidden');
+                    loadArchive();
+                }
             }
         });
 
@@ -113,7 +128,7 @@
                     class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0">
             </div>
 
-            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Reyvan Evan</h1>
+            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">M Reyvan Purnama</h1>
             <p class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
 
             <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
@@ -124,6 +139,18 @@
         <!-- HIGHLIGHTS SECTION -->
         <div class="flex gap-4 overflow-x-auto py-2 mb-6 justify-start no-scrollbar px-2"
             data-aos="fade-up" data-aos-delay="50">
+
+            <!-- Highlight: Archive (hanya muncul jika isOwner) -->
+            <div id="archiveHighlight" class="hidden flex-col items-center gap-2 min-w-[64px] cursor-pointer group" onclick="toggleArchiveModal()">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-500 to-slate-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="archive" class="w-6 h-6 text-slate-500"></i>
+                    </div>
+                </div>
+                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Arsip</span>
+            </div>
 
             <!-- Highlight: Her -->
             <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
@@ -278,9 +305,226 @@
         </div>
     </nav>
 
+    <!-- Archive Section (Only visible to owner) -->
+    <div id="archiveSection" class="hidden">
+        <!-- This is controlled by JS - shows archive highlight when owner is viewing -->
+    </div>
+
+    <!-- Archive Modal -->
+    <div id="archiveModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div onclick="toggleArchiveModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-x-4 top-16 bottom-4 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:max-w-md bg-white dark:bg-slate-900 rounded-2xl overflow-hidden flex flex-col">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="archive" class="w-5 h-5 text-slate-500"></i>
+                    <h2 class="font-serif font-bold text-lg">Story Archive</h2>
+                </div>
+                <button onclick="toggleArchiveModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Archive Content -->
+            <div id="archiveContent" class="flex-1 overflow-y-auto p-4">
+                <!-- Loading -->
+                <div id="archiveLoading" class="flex items-center justify-center py-8">
+                    <div class="animate-spin w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                </div>
+                
+                <!-- Empty State -->
+                <div id="archiveEmpty" class="hidden text-center py-8">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                        <i data-lucide="inbox" class="w-8 h-8 text-slate-400"></i>
+                    </div>
+                    <p class="text-slate-500 text-sm">No archived stories yet</p>
+                    <p class="text-slate-400 text-xs mt-1">Stories older than 24h will appear here</p>
+                </div>
+                
+                <!-- Archive List (grouped by month) -->
+                <div id="archiveList" class="hidden space-y-6">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Viewer Modal for Archive -->
+    <div id="archiveStoryModal" class="fixed inset-0 z-[110] hidden bg-black">
+        <!-- Progress Bar -->
+        <div class="absolute top-0 left-0 right-0 z-20 p-2 px-3">
+            <div class="h-0.5 bg-white/30 rounded-full overflow-hidden">
+                <div id="archiveStoryProgress" class="h-full bg-white rounded-full" style="width: 0%;"></div>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <div class="absolute top-4 left-0 right-0 z-20 px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img id="archiveStoryAvatar" src="" class="w-8 h-8 rounded-full object-cover border border-white/30">
+                <div>
+                    <p id="archiveStoryAuthor" class="text-white text-sm font-semibold"></p>
+                    <p id="archiveStoryDate" class="text-white/60 text-xs"></p>
+                </div>
+            </div>
+            <button onclick="closeArchiveStory()" class="p-2 text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <!-- Story Image -->
+        <div class="absolute inset-0 flex items-center justify-center">
+            <img id="archiveStoryImage" src="" class="max-w-full max-h-full object-contain">
+        </div>
+        
+        <!-- Caption -->
+        <div class="absolute bottom-0 left-0 right-0 z-20 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent">
+            <p id="archiveStoryCaption" class="text-white text-sm text-center"></p>
+        </div>
+    </div>
+
     <!-- Load Logic -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="../js/script.js"></script>
+    
+    <!-- Archive Logic -->
+    <script type="module">
+        import { getArchivedStories, groupStoriesByMonth, formatDate, USER_PROFILES } from '../js/firestore-service.js';
+        
+        let archivedStories = [];
+        
+        // Load archive stories
+        window.loadArchive = async function() {
+            try {
+                archivedStories = await getArchivedStories('rey');
+                
+                // Show archive highlight if there are archived stories
+                if (archivedStories.length > 0) {
+                    document.getElementById('archiveHighlight').classList.remove('hidden');
+                    document.getElementById('archiveHighlight').classList.add('flex');
+                }
+            } catch (error) {
+                console.error('Failed to load archive:', error);
+            }
+        };
+        
+        // Toggle archive modal
+        window.toggleArchiveModal = async function() {
+            const modal = document.getElementById('archiveModal');
+            const isHidden = modal.classList.contains('hidden');
+            
+            if (isHidden) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                await renderArchive();
+            } else {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            lucide.createIcons();
+        };
+        
+        // Render archive content
+        async function renderArchive() {
+            const loading = document.getElementById('archiveLoading');
+            const empty = document.getElementById('archiveEmpty');
+            const list = document.getElementById('archiveList');
+            
+            loading.classList.remove('hidden');
+            empty.classList.add('hidden');
+            list.classList.add('hidden');
+            
+            try {
+                // Refresh data
+                archivedStories = await getArchivedStories('rey');
+                
+                loading.classList.add('hidden');
+                
+                if (archivedStories.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                
+                // Group by month
+                const grouped = groupStoriesByMonth(archivedStories);
+                
+                // Render grouped stories
+                list.innerHTML = Object.entries(grouped).map(([month, stories]) => `
+                    <div class="space-y-3">
+                        <h3 class="font-serif font-bold text-sm text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-4 h-4"></i>
+                            ${month}
+                            <span class="text-xs text-slate-400 font-normal">(${stories.length})</span>
+                        </h3>
+                        <div class="grid grid-cols-3 gap-2">
+                            ${stories.map((story, idx) => `
+                                <div class="aspect-square rounded-xl overflow-hidden cursor-pointer relative group"
+                                     onclick="openArchiveStory(${archivedStories.indexOf(story)})">
+                                    <img src="${story.imageBase64}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-end justify-center pb-2 opacity-0 group-hover:opacity-100">
+                                        <span class="text-white text-[10px]">${formatDate(story.createdAt)}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+                
+                list.classList.remove('hidden');
+                lucide.createIcons();
+                
+            } catch (error) {
+                console.error('Failed to render archive:', error);
+                loading.innerHTML = '<p class="text-red-500 text-center">Failed to load archive</p>';
+            }
+        }
+        
+        // Open archive story viewer
+        window.openArchiveStory = function(index) {
+            const story = archivedStories[index];
+            if (!story) return;
+            
+            const modal = document.getElementById('archiveStoryModal');
+            const profile = USER_PROFILES['rey'];
+            
+            document.getElementById('archiveStoryImage').src = story.imageBase64;
+            document.getElementById('archiveStoryAvatar').src = profile.avatarUrl;
+            document.getElementById('archiveStoryAuthor').textContent = profile.displayName;
+            document.getElementById('archiveStoryDate').textContent = formatDate(story.createdAt);
+            document.getElementById('archiveStoryCaption').textContent = story.caption || '';
+            
+            modal.classList.remove('hidden');
+            
+            // Simple progress animation
+            const progress = document.getElementById('archiveStoryProgress');
+            progress.style.transition = 'width 5s linear';
+            progress.style.width = '0%';
+            setTimeout(() => progress.style.width = '100%', 50);
+            
+            lucide.createIcons();
+        };
+        
+        // Close archive story
+        window.closeArchiveStory = function() {
+            document.getElementById('archiveStoryModal').classList.add('hidden');
+            document.getElementById('archiveStoryProgress').style.width = '0%';
+        };
+        
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeArchiveStory();
+                if (!document.getElementById('archiveModal').classList.contains('hidden')) {
+                    toggleArchiveModal();
+                }
+            }
+        });
+    </script>
+
     <script>
         // Init Plugins
         lucide.createIcons();

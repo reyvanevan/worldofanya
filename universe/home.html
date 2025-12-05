@@ -7,9 +7,7 @@
     <title>Us | Timeline</title>
 
     <!-- Load Modular Assets -->
-    <!-- Load Modular Assets -->
     <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/config.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,20 +28,7 @@
                 }
             }
         }
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <script type="module">
-        import { auth } from '../js/firebase-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = '../index.html';
-            }
-        });
-
+        
         // Theme Check (Prevent Flash)
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
@@ -51,6 +36,8 @@
             document.documentElement.classList.remove('dark')
         }
     </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <!-- Body Background mengikuti style global -->
@@ -97,98 +84,62 @@
     <main class="max-w-md mx-auto pt-20 px-4 space-y-6">
 
         <!-- Stories / Highlights (Horizontal Scroll) -->
-        <div class="flex gap-4 overflow-x-auto no-scrollbar py-2">
-            <!-- Add New -->
-            <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
+        <div class="flex gap-4 overflow-x-auto no-scrollbar py-2" id="storiesContainer">
+            <!-- Add New Story -->
+            <a href="upload.html" class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
                 <div
-                    class="w-16 h-16 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
+                    class="w-16 h-16 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center bg-slate-100 dark:bg-slate-800 hover:border-pink-500 transition">
                     <i data-lucide="plus" class="w-6 h-6 text-slate-400"></i>
                 </div>
                 <span class="text-xs font-medium text-slate-500">New</span>
-            </div>
+            </a>
 
-            <!-- Story Item -->
-            <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
-                <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-orange-500">
-                    <img src="https://ui-avatars.com/api/?name=Dates&background=random"
-                        class="w-full h-full rounded-full border-2 border-white dark:border-slate-900 object-cover">
+            <!-- Stories will be loaded dynamically -->
+            <div id="storiesList" class="flex gap-4">
+                <!-- Loading placeholder -->
+                <div class="flex flex-col items-center gap-1 min-w-[64px] animate-pulse">
+                    <div class="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="h-3 w-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
                 </div>
-                <span class="text-xs font-medium">Dates</span>
-            </div>
-            <!-- Story Item -->
-            <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
-                <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-purple-500">
-                    <img src="https://ui-avatars.com/api/?name=Trips&background=random"
-                        class="w-full h-full rounded-full border-2 border-white dark:border-slate-900 object-cover">
-                </div>
-                <span class="text-xs font-medium">Trips</span>
             </div>
         </div>
 
-        <!-- Post 1: Standard Photo Post -->
-        <article
-            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden"
-            data-aos="fade-up">
-            <!-- Header Post -->
-            <div class="p-4 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Rey&background=0D8ABC&color=fff"
-                        class="w-10 h-10 rounded-full">
-                    <div>
-                        <h3 class="font-bold text-sm">Reyvan</h3>
-                        <p class="text-xs text-slate-500">Jakarta, Indonesia</p>
+        <!-- Posts Container - will be populated dynamically -->
+        <div id="postsContainer">
+            <!-- Loading State -->
+            <div id="postsLoading" class="space-y-6">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden animate-pulse">
+                    <div class="p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                        <div class="space-y-2">
+                            <div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                            <div class="h-2 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="aspect-square bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="p-4 space-y-2">
+                        <div class="h-3 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        <div class="h-3 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
                     </div>
                 </div>
-                <button><i data-lucide="more-horizontal" class="w-5 h-5 text-slate-400"></i></button>
             </div>
-
-            <!-- Image -->
-            <div class="aspect-square bg-slate-100 dark:bg-slate-800">
-                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-                    class="w-full h-full object-cover">
-            </div>
-
-            <!-- Actions & Caption -->
-            <div class="p-4">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex gap-4">
-                        <button><i data-lucide="heart" class="w-6 h-6 hover:text-pink-500 transition"></i></button>
-                        <button><i data-lucide="message-circle"
-                                class="w-6 h-6 hover:text-blue-500 transition"></i></button>
-                        <button><i data-lucide="send"
-                                class="w-6 h-6 -rotate-45 hover:text-green-500 transition mt-1"></i></button>
-                    </div>
-                    <button><i data-lucide="bookmark" class="w-6 h-6 hover:text-yellow-500 transition"></i></button>
+            
+            <!-- Posts will be inserted here -->
+            <div id="postsList" class="space-y-6 hidden"></div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <div class="w-20 h-20 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                    <i data-lucide="camera" class="w-10 h-10 text-slate-400"></i>
                 </div>
-
-                <p class="text-sm font-bold mb-1">24 likes</p>
-                <p class="text-sm leading-relaxed">
-                    <span class="font-bold mr-1">Reyvan</span>
-                    Chapter one of our story. Masih inget gak ini kapan? 😜 <span
-                        class="text-blue-500">#FirstDate</span>
-                </p>
-                <p class="text-xs text-slate-400 mt-2 uppercase">2 Hours Ago</p>
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-white mb-2">No Memories Yet</h3>
+                <p class="text-slate-500 text-sm mb-6">Start capturing your moments together!</p>
+                <a href="upload.html" class="inline-flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Add First Memory
+                </a>
             </div>
-        </article>
-
-        <!-- Post 2: Quote/Note Post -->
-        <article
-            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden"
-            data-aos="fade-up">
-            <div class="p-4 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800">
-                <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                    <i data-lucide="pen-tool" class="w-4 h-4"></i>
-                </div>
-                <span class="font-bold text-sm">Daily Note</span>
-            </div>
-
-            <div
-                class="p-8 bg-gradient-to-br from-pink-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 text-center">
-                <p class="font-serif text-lg italic text-slate-700 dark:text-slate-300">
-                    "I look at you and see the rest of my life in front of my eyes."
-                </p>
-            </div>
-        </article>
+        </div>
 
     </main>
 
@@ -233,9 +184,563 @@
         </div>
     </nav>
 
+    <!-- Photo Modal/Popup -->
+    <div id="photoModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closePhotoModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <!-- Close Button -->
+            <button onclick="closePhotoModal()" 
+                class="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white transition">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            
+            <!-- Image Container -->
+            <div class="relative max-w-2xl w-full max-h-[90vh] flex flex-col">
+                <!-- Image -->
+                <img id="modalImage" src="" alt="Photo" 
+                    class="w-full max-h-[70vh] object-contain rounded-t-2xl bg-black">
+                
+                <!-- Caption & Details -->
+                <div id="modalDetails" class="bg-white dark:bg-slate-900 rounded-b-2xl p-4 max-h-[20vh] overflow-y-auto">
+                    <!-- Author -->
+                    <div class="flex items-center gap-3 mb-3">
+                        <img id="modalAuthorAvatar" src="" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <p id="modalAuthorName" class="font-bold text-sm"></p>
+                            <p id="modalLocation" class="text-xs text-slate-500"></p>
+                        </div>
+                        <p id="modalTime" class="text-xs text-slate-400 ml-auto"></p>
+                    </div>
+                    
+                    <!-- Caption -->
+                    <p id="modalCaption" class="text-sm leading-relaxed"></p>
+                    
+                    <!-- Tags -->
+                    <div id="modalTags" class="flex gap-2 mt-2 flex-wrap"></div>
+                    
+                    <!-- Actions -->
+                    <div class="flex items-center gap-4 mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-pink-500 transition">
+                            <i data-lucide="heart" class="w-5 h-5"></i>
+                            <span id="modalLikes" class="text-sm">0</span>
+                        </button>
+                        <button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-500 transition">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        </button>
+                        <button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-green-500 transition">
+                            <i data-lucide="share-2" class="w-5 h-5"></i>
+                        </button>
+                        <button class="ml-auto text-slate-600 dark:text-slate-400 hover:text-yellow-500 transition">
+                            <i data-lucide="bookmark" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Viewer Modal (Instagram/WhatsApp Style) -->
+    <div id="storyModal" class="fixed inset-0 z-[100] hidden bg-black">
+        <!-- Progress Bars Container -->
+        <div id="storyProgressBars" class="absolute top-0 left-0 right-0 z-20 flex gap-1 p-2 px-3">
+            <!-- Progress bars will be dynamically inserted -->
+        </div>
+        
+        <!-- Header -->
+        <div class="absolute top-6 left-0 right-0 z-20 px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img id="storyAuthorAvatar" src="" class="w-8 h-8 rounded-full object-cover border border-white/30">
+                <div>
+                    <p id="storyAuthorName" class="text-white text-sm font-semibold"></p>
+                    <p id="storyTime" class="text-white/60 text-xs"></p>
+                </div>
+            </div>
+            <button onclick="closeStoryModal()" class="p-2 text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <!-- Story Image -->
+        <div class="absolute inset-0 flex items-center justify-center">
+            <img id="storyImage" src="" class="max-w-full max-h-full object-contain">
+        </div>
+        
+        <!-- Navigation Touch Areas -->
+        <div class="absolute inset-0 flex z-10">
+            <!-- Left (Previous) -->
+            <div onclick="prevStory()" class="w-1/3 h-full cursor-pointer"></div>
+            <!-- Center (Pause/Play) -->
+            <div onclick="toggleStoryPause()" class="w-1/3 h-full cursor-pointer"></div>
+            <!-- Right (Next) -->
+            <div onclick="nextStory()" class="w-1/3 h-full cursor-pointer"></div>
+        </div>
+        
+        <!-- Caption (Bottom) -->
+        <div class="absolute bottom-0 left-0 right-0 z-20 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent">
+            <p id="storyCaption" class="text-white text-sm text-center"></p>
+        </div>
+        
+        <!-- Pause Indicator -->
+        <div id="pauseIndicator" class="absolute inset-0 hidden items-center justify-center z-30 pointer-events-none">
+            <div class="bg-black/50 rounded-full p-4">
+                <i data-lucide="pause" class="w-12 h-12 text-white"></i>
+            </div>
+        </div>
+    </div>
+
     <!-- Load Logic -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="../js/script.js"></script>
+    
+    <!-- Firebase & Firestore Module -->
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES } from '../js/firestore-service.js';
+
+        // Auth check
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../index.html';
+            } else {
+                // User is logged in, load data
+                loadPosts();
+                loadStories();
+            }
+        });
+
+        // Load and render posts
+        async function loadPosts() {
+            const postsLoading = document.getElementById('postsLoading');
+            const postsList = document.getElementById('postsList');
+            const emptyState = document.getElementById('emptyState');
+
+            try {
+                const posts = await getPosts(20);
+                
+                postsLoading.classList.add('hidden');
+                
+                if (posts.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                postsList.innerHTML = posts.map(post => renderPost(post)).join('');
+                postsList.classList.remove('hidden');
+                
+                // Re-init Lucide icons for dynamic content
+                lucide.createIcons();
+                
+            } catch (error) {
+                console.error('Failed to load posts:', error);
+                postsLoading.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p>Failed to load posts. Please refresh.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render single post
+        function renderPost(post) {
+            if (post.type === 'note') {
+                return renderNotePost(post);
+            }
+            return renderPhotoPost(post);
+        }
+
+        // Render photo post
+        function renderPhotoPost(post) {
+            const tags = (post.tags || []).map(t => `<span class="text-blue-500">#${t}</span>`).join(' ');
+            const postDataAttr = encodeURIComponent(JSON.stringify({
+                id: post.id,
+                imageBase64: post.imageBase64,
+                authorAvatar: post.authorAvatar,
+                authorDisplayName: post.authorDisplayName,
+                authorName: post.authorName,
+                location: post.location || '',
+                caption: post.caption || '',
+                tags: post.tags || [],
+                likes: post.likes || 0,
+                createdAt: post.createdAt.toISOString()
+            }));
+            
+            return `
+                <article class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden" data-aos="fade-up">
+                    <div class="p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img src="${post.authorAvatar || 'https://ui-avatars.com/api/?name=' + post.authorDisplayName}" 
+                                class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h3 class="font-bold text-sm">${post.authorDisplayName || post.authorName}</h3>
+                                ${post.location ? `<p class="text-xs text-slate-500">${post.location}</p>` : ''}
+                            </div>
+                        </div>
+                        <button><i data-lucide="more-horizontal" class="w-5 h-5 text-slate-400"></i></button>
+                    </div>
+
+                    <div class="aspect-square bg-slate-100 dark:bg-slate-800 cursor-pointer" 
+                         onclick="openPhotoModal('${postDataAttr}')">
+                        <img src="${post.imageBase64}" class="w-full h-full object-cover hover:opacity-95 transition" loading="lazy">
+                    </div>
+
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex gap-4">
+                                <button class="like-btn" data-post-id="${post.id}">
+                                    <i data-lucide="heart" class="w-6 h-6 hover:text-pink-500 transition"></i>
+                                </button>
+                                <button><i data-lucide="message-circle" class="w-6 h-6 hover:text-blue-500 transition"></i></button>
+                                <button><i data-lucide="send" class="w-6 h-6 -rotate-45 hover:text-green-500 transition mt-1"></i></button>
+                            </div>
+                            <button><i data-lucide="bookmark" class="w-6 h-6 hover:text-yellow-500 transition"></i></button>
+                        </div>
+
+                        ${post.likes > 0 ? `<p class="text-sm font-bold mb-1">${post.likes} likes</p>` : ''}
+                        
+                        <p class="text-sm leading-relaxed">
+                            <span class="font-bold mr-1">${post.authorDisplayName}</span>
+                            ${post.caption || ''} ${tags}
+                        </p>
+                        <p class="text-xs text-slate-400 mt-2 uppercase">${formatRelativeTime(post.createdAt)}</p>
+                    </div>
+                </article>
+            `;
+        }
+
+        // Render note post
+        function renderNotePost(post) {
+            const authorColor = post.authorId === 'rey' ? 'blue' : 'pink';
+            
+            return `
+                <article class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden" data-aos="fade-up">
+                    <div class="p-4 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800">
+                        <div class="w-8 h-8 bg-${authorColor}-100 dark:bg-${authorColor}-900/30 text-${authorColor}-600 dark:text-${authorColor}-400 rounded-full flex items-center justify-center">
+                            <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                        </div>
+                        <span class="font-bold text-sm">${post.authorDisplayName}'s Note</span>
+                        <span class="text-xs text-slate-400 ml-auto">${formatRelativeTime(post.createdAt)}</span>
+                    </div>
+
+                    <div class="p-8 bg-gradient-to-br from-pink-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 text-center">
+                        <p class="font-serif text-lg italic text-slate-700 dark:text-slate-300">
+                            "${post.caption}"
+                        </p>
+                    </div>
+                    
+                    <div class="p-4 flex justify-center gap-6">
+                        <button class="like-btn" data-post-id="${post.id}">
+                            <i data-lucide="heart" class="w-5 h-5 hover:text-pink-500 transition"></i>
+                        </button>
+                        <button><i data-lucide="bookmark" class="w-5 h-5 hover:text-yellow-500 transition"></i></button>
+                    </div>
+                </article>
+            `;
+        }
+
+        // Load and render stories
+        async function loadStories() {
+            const storiesList = document.getElementById('storiesList');
+
+            try {
+                const stories = await getActiveStories();
+                
+                if (stories.length === 0) {
+                    // Show default category highlights
+                    storiesList.innerHTML = `
+                        <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer opacity-50">
+                            <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-300 to-slate-400">
+                                <div class="w-full h-full rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center border-2 border-white dark:border-slate-900">
+                                    <i data-lucide="heart" class="w-6 h-6 text-slate-400"></i>
+                                </div>
+                            </div>
+                            <span class="text-xs font-medium text-slate-400">Dates</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer opacity-50">
+                            <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-300 to-slate-400">
+                                <div class="w-full h-full rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center border-2 border-white dark:border-slate-900">
+                                    <i data-lucide="plane" class="w-6 h-6 text-slate-400"></i>
+                                </div>
+                            </div>
+                            <span class="text-xs font-medium text-slate-400">Trips</span>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                    return;
+                }
+
+                storiesList.innerHTML = stories.map((story, index) => `
+                    <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer story-item" 
+                         onclick="openStoryModal(${index})"
+                         data-story-id="${story.id}">
+                        <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-purple-500">
+                            <img src="${story.imageBase64}" 
+                                class="w-full h-full rounded-full border-2 border-white dark:border-slate-900 object-cover">
+                        </div>
+                        <span class="text-xs font-medium">${story.authorDisplayName}</span>
+                    </div>
+                `).join('');
+                
+                // Store stories globally for story viewer
+                window.allStories = stories;
+                
+            } catch (error) {
+                console.error('Failed to load stories:', error);
+                storiesList.innerHTML = '';
+            }
+        }
+
+        // Make formatRelativeTime available globally for re-renders
+        window.formatRelativeTime = formatRelativeTime;
+        
+        // Photo Modal Functions
+        window.openPhotoModal = function(encodedData) {
+            const post = JSON.parse(decodeURIComponent(encodedData));
+            const modal = document.getElementById('photoModal');
+            
+            // Set image
+            document.getElementById('modalImage').src = post.imageBase64;
+            
+            // Set author info
+            document.getElementById('modalAuthorAvatar').src = post.authorAvatar || `https://ui-avatars.com/api/?name=${post.authorDisplayName}`;
+            document.getElementById('modalAuthorName').textContent = post.authorDisplayName || post.authorName;
+            document.getElementById('modalLocation').textContent = post.location || '';
+            
+            // Set time
+            const createdAt = new Date(post.createdAt);
+            document.getElementById('modalTime').textContent = formatRelativeTime(createdAt);
+            
+            // Set caption
+            document.getElementById('modalCaption').textContent = post.caption || '';
+            
+            // Set tags
+            const tagsContainer = document.getElementById('modalTags');
+            if (post.tags && post.tags.length > 0) {
+                tagsContainer.innerHTML = post.tags.map(t => 
+                    `<span class="text-xs text-blue-500">#${t}</span>`
+                ).join('');
+            } else {
+                tagsContainer.innerHTML = '';
+            }
+            
+            // Set likes
+            document.getElementById('modalLikes').textContent = post.likes || 0;
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Re-init icons
+            lucide.createIcons();
+        };
+        
+        window.closePhotoModal = function() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+        
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePhotoModal();
+                closeStoryModal();
+            }
+            // Arrow keys for story navigation
+            if (document.getElementById('storyModal').classList.contains('hidden') === false) {
+                if (e.key === 'ArrowRight') nextStory();
+                if (e.key === 'ArrowLeft') prevStory();
+                if (e.key === ' ') { e.preventDefault(); toggleStoryPause(); }
+            }
+        });
+
+        // ==================== STORY VIEWER ====================
+        
+        let storyState = {
+            currentIndex: 0,
+            stories: [],
+            isPaused: false,
+            progressInterval: null,
+            progress: 0,
+            STORY_DURATION: 5000 // 5 seconds per story
+        };
+
+        // Open story modal
+        window.openStoryModal = function(startIndex = 0) {
+            if (!window.allStories || window.allStories.length === 0) return;
+            
+            storyState.stories = window.allStories;
+            storyState.currentIndex = startIndex;
+            storyState.isPaused = false;
+            storyState.progress = 0;
+            
+            const modal = document.getElementById('storyModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Build progress bars
+            buildProgressBars();
+            
+            // Show current story
+            showStory(storyState.currentIndex);
+            
+            // Start progress
+            startProgress();
+            
+            lucide.createIcons();
+        };
+
+        // Close story modal
+        window.closeStoryModal = function() {
+            const modal = document.getElementById('storyModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            stopProgress();
+        };
+
+        // Build progress bars
+        function buildProgressBars() {
+            const container = document.getElementById('storyProgressBars');
+            container.innerHTML = storyState.stories.map((_, i) => `
+                <div class="flex-1 h-0.5 bg-white/30 rounded-full overflow-hidden">
+                    <div class="story-progress-bar h-full bg-white rounded-full" 
+                         data-index="${i}" 
+                         style="width: 0%; transition: none;"></div>
+                </div>
+            `).join('');
+        }
+
+        // Show specific story
+        function showStory(index) {
+            const story = storyState.stories[index];
+            if (!story) return;
+            
+            // Update image
+            document.getElementById('storyImage').src = story.imageBase64;
+            
+            // Update author info
+            document.getElementById('storyAuthorAvatar').src = story.authorAvatar || 
+                `https://ui-avatars.com/api/?name=${story.authorDisplayName}&background=ec4899&color=fff`;
+            document.getElementById('storyAuthorName').textContent = story.authorDisplayName || 'User';
+            
+            // Update time
+            const createdAt = story.createdAt?.toDate ? story.createdAt.toDate() : new Date(story.createdAt);
+            document.getElementById('storyTime').textContent = formatRelativeTime(createdAt);
+            
+            // Update caption
+            document.getElementById('storyCaption').textContent = story.caption || '';
+            
+            // Update progress bars (mark previous as complete, current as in-progress)
+            document.querySelectorAll('.story-progress-bar').forEach((bar, i) => {
+                if (i < index) {
+                    bar.style.transition = 'none';
+                    bar.style.width = '100%';
+                } else if (i === index) {
+                    bar.style.transition = 'none';
+                    bar.style.width = '0%';
+                } else {
+                    bar.style.transition = 'none';
+                    bar.style.width = '0%';
+                }
+            });
+            
+            // Reset progress for current story
+            storyState.progress = 0;
+        }
+
+        // Start progress animation
+        function startProgress() {
+            stopProgress();
+            
+            const progressBar = document.querySelector(`.story-progress-bar[data-index="${storyState.currentIndex}"]`);
+            if (!progressBar) return;
+            
+            const startTime = Date.now() - (storyState.progress / 100 * storyState.STORY_DURATION);
+            
+            storyState.progressInterval = setInterval(() => {
+                if (storyState.isPaused) return;
+                
+                const elapsed = Date.now() - startTime;
+                storyState.progress = Math.min((elapsed / storyState.STORY_DURATION) * 100, 100);
+                
+                progressBar.style.transition = 'none';
+                progressBar.style.width = storyState.progress + '%';
+                
+                if (storyState.progress >= 100) {
+                    nextStory();
+                }
+            }, 16); // ~60fps
+        }
+
+        // Stop progress
+        function stopProgress() {
+            if (storyState.progressInterval) {
+                clearInterval(storyState.progressInterval);
+                storyState.progressInterval = null;
+            }
+        }
+
+        // Next story
+        window.nextStory = function() {
+            stopProgress();
+            
+            // Mark current as complete
+            const currentBar = document.querySelector(`.story-progress-bar[data-index="${storyState.currentIndex}"]`);
+            if (currentBar) {
+                currentBar.style.width = '100%';
+            }
+            
+            storyState.currentIndex++;
+            
+            if (storyState.currentIndex >= storyState.stories.length) {
+                // End of stories
+                closeStoryModal();
+                return;
+            }
+            
+            storyState.progress = 0;
+            showStory(storyState.currentIndex);
+            startProgress();
+        };
+
+        // Previous story
+        window.prevStory = function() {
+            stopProgress();
+            
+            // If we're past 10% progress, restart current story
+            if (storyState.progress > 10) {
+                storyState.progress = 0;
+                showStory(storyState.currentIndex);
+                startProgress();
+                return;
+            }
+            
+            // Otherwise go to previous
+            storyState.currentIndex = Math.max(0, storyState.currentIndex - 1);
+            storyState.progress = 0;
+            showStory(storyState.currentIndex);
+            startProgress();
+        };
+
+        // Toggle pause
+        window.toggleStoryPause = function() {
+            storyState.isPaused = !storyState.isPaused;
+            
+            const indicator = document.getElementById('pauseIndicator');
+            if (storyState.isPaused) {
+                indicator.classList.remove('hidden');
+                indicator.classList.add('flex');
+            } else {
+                indicator.classList.add('hidden');
+                indicator.classList.remove('flex');
+            }
+            
+            lucide.createIcons();
+        };
+    </script>
 
 </body>
 
