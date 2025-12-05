@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | World of Anya</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/config.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body
+    class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 transition-colors duration-500">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layout-dashboard" class="w-6 h-6 text-brand-accent"></i>
+                    <span class="font-serif text-xl font-bold text-slate-800 dark:text-white">Admin Panel</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="user-email" class="text-sm text-slate-500 hidden md:block"></span>
+                    <button id="logout-btn"
+                        class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-20 px-4 max-w-7xl mx-auto">
+
+        <!-- Tabs -->
+        <div class="flex overflow-x-auto gap-2 mb-8 pb-2 no-scrollbar" id="admin-tabs">
+            <button data-tab="home"
+                class="tab-btn active px-6 py-2 rounded-full bg-brand-accent text-white font-medium shadow-lg shadow-pink-500/30 transition-all whitespace-nowrap">
+                Home Page
+            </button>
+            <button data-tab="her"
+                class="tab-btn px-6 py-2 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-pink-50 dark:hover:bg-slate-700 transition-all whitespace-nowrap">
+                Her Page
+            </button>
+            <button data-tab="him"
+                class="tab-btn px-6 py-2 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-pink-50 dark:hover:bg-slate-700 transition-all whitespace-nowrap">
+                Him Page
+            </button>
+            <button data-tab="us"
+                class="tab-btn px-6 py-2 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-pink-50 dark:hover:bg-slate-700 transition-all whitespace-nowrap">
+                Us Page
+            </button>
+        </div>
+
+        <!-- Content Sections -->
+
+        <!-- HOME SECTION -->
+        <div id="home-section" class="tab-content space-y-8">
+            <!-- Hero Config -->
+            <div class="glass-panel p-6 rounded-2xl">
+                <h3 class="text-lg font-serif font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="home" class="w-5 h-5 text-brand-accent"></i> Hero Section
+                </h3>
+                <form id="home-hero-form" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Main Title</label>
+                            <input type="text" name="title" class="w-full input-field" placeholder="Zalfa Nazhifah">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Subtitle</label>
+                            <input type="text" name="subtitle" class="w-full input-field"
+                                placeholder="Sebuah ruang kecil...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- About Config -->
+            <div class="glass-panel p-6 rounded-2xl">
+                <h3 class="text-lg font-serif font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="user" class="w-5 h-5 text-brand-accent"></i> About Section
+                </h3>
+                <form id="home-about-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">About Text (Paragraph 1)</label>
+                        <textarea name="about1" rows="3" class="w-full input-field"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">About Text (Paragraph 2)</label>
+                        <textarea name="about2" rows="3" class="w-full input-field"></textarea>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Profile Image</label>
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 rounded-xl bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+                                <img id="home-about-img-preview" src="" class="w-full h-full object-cover hidden">
+                                <div id="home-about-img-placeholder"
+                                    class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                    <i data-lucide="image" class="w-8 h-8"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="home-about-img-input" accept="image/*"
+                                class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-brand-accent hover:file:bg-pink-100">
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Max 1MB. Will be compressed automatically.</p>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- HER SECTION -->
+        <div id="her-section" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl">
+                <h3 class="text-lg font-serif font-bold mb-4">Her Profile</h3>
+                <form id="her-profile-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Quote</label>
+                        <input type="text" name="quote" class="w-full input-field">
+                    </div>
+                    <!-- Image Upload for Her Profile -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Profile Image</label>
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+                                <img id="her-profile-img-preview" src="" class="w-full h-full object-cover hidden">
+                                <div id="her-profile-img-placeholder"
+                                    class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                    <i data-lucide="image" class="w-8 h-8"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="her-profile-img-input" accept="image/*"
+                                class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-brand-accent hover:file:bg-pink-100">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- HIM SECTION -->
+        <div id="him-section" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl">
+                <h3 class="text-lg font-serif font-bold mb-4">Him Profile</h3>
+                <form id="him-profile-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Quote</label>
+                        <input type="text" name="quote" class="w-full input-field">
+                    </div>
+                    <!-- Image Upload for Him Profile -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Profile Image</label>
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+                                <img id="him-profile-img-preview" src="" class="w-full h-full object-cover hidden">
+                                <div id="him-profile-img-placeholder"
+                                    class="absolute inset-0 flex items-center justify-center text-slate-400">
+                                    <i data-lucide="image" class="w-8 h-8"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="him-profile-img-input" accept="image/*"
+                                class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-brand-accent hover:file:bg-pink-100">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- US SECTION -->
+        <div id="us-section" class="tab-content hidden space-y-8">
+            <!-- Add New Post -->
+            <div class="glass-panel p-6 rounded-2xl border-2 border-brand-pink/30">
+                <h3 class="text-lg font-serif font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-5 h-5 text-brand-accent"></i> Add New Memory
+                </h3>
+                <form id="us-post-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Caption</label>
+                        <textarea id="post-caption" rows="3" class="w-full input-field"
+                            placeholder="Write something sweet..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Date</label>
+                        <input type="date" id="post-date" class="w-full input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Photo</label>
+                        <input type="file" id="post-img-input" accept="image/*"
+                            class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-brand-accent hover:file:bg-pink-100">
+                    </div>
+                    <button type="submit" class="btn-primary w-full">Post Memory</button>
+                </form>
+            </div>
+
+            <!-- Post List -->
+            <div class="space-y-4" id="posts-container">
+                <!-- Posts will be loaded here -->
+                <div class="text-center py-10 text-slate-400">
+                    <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2"></i>
+                    Loading memories...
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast"
+        class="fixed bottom-6 right-6 px-6 py-3 bg-slate-800 text-white rounded-xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+        <span id="toast-msg">Changes saved successfully!</span>
+    </div>
+
+    <style>
+        .input-field {
+            @apply bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all w-full;
+        }
+
+        .btn-primary {
+            @apply px-6 py-2 bg-brand-accent hover:bg-pink-600 text-white rounded-xl font-medium shadow-lg shadow-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98];
+        }
+    </style>
+
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/cms.js"></script>
+    <script>
+        // Simple Tab Logic
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => {
+                    t.classList.remove('active', 'bg-brand-accent', 'text-white', 'shadow-lg');
+                    t.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-400');
+                });
+
+                // Add active class to clicked tab
+                tab.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-400');
+                tab.classList.add('active', 'bg-brand-accent', 'text-white', 'shadow-lg');
+
+                // Hide all contents
+                contents.forEach(c => c.classList.add('hidden'));
+
+                // Show target content
+                const target = tab.dataset.tab;
+                document.getElementById(`${target}-section`).classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>
