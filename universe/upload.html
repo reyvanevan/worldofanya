@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Us | New Post</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../index.html';
+            }
+        });
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#FCE7F3',
+                            blue: '#E0F2FE',
+                            accent: '#db2777',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 pb-24 selection:bg-pink-500 selection:text-white transition-colors duration-300">
+
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
+
+            <a href="home.html" class="p-2 -ml-2 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </a>
+
+            <span class="font-bold text-lg">New Memory</span>
+
+            <button onclick="handlePost()"
+                class="font-bold text-pink-500 hover:text-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                id="postBtn">
+                Share
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto pt-20 px-4 space-y-6">
+
+        <div class="w-full aspect-square bg-slate-100 dark:bg-slate-900 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 relative overflow-hidden group cursor-pointer hover:border-pink-400 transition"
+            id="dropZone">
+
+            <input type="file" id="fileInput" accept="image/*"
+                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="previewImage(event)">
+
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 group-hover:text-pink-500 transition z-10"
+                id="uploadPlaceholder">
+                <div
+                    class="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                    <i data-lucide="image-plus" class="w-8 h-8"></i>
+                </div>
+                <span class="text-sm font-medium">Tap to upload photo</span>
+            </div>
+
+            <img id="imagePreview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
+
+            <button onclick="removeImage(event)" id="removeBtn"
+                class="absolute top-2 right-2 z-30 bg-black/50 text-white p-1.5 rounded-full hover:bg-red-500 transition hidden">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex gap-3">
+                <img src="https://ui-avatars.com/api/?name=Rey&background=0D8ABC&color=fff"
+                    class="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-700">
+                <textarea
+                    class="w-full bg-transparent border-none focus:ring-0 text-slate-800 dark:text-slate-200 placeholder-slate-400 text-sm resize-none h-24 p-0 leading-relaxed"
+                    placeholder="Write a caption... (e.g., 'Masih inget hari ini gak?')"></textarea>
+            </div>
+
+            <div class="h-px bg-slate-200 dark:bg-slate-800 w-full"></div>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    <input type="text" placeholder="Add Location"
+                        class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400">
+                </div>
+
+                <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <input type="date"
+                        class="bg-transparent border-none focus:ring-0 p-0 text-sm text-slate-500 dark:text-slate-400 font-sans w-full">
+                </div>
+
+                <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pt-2">
+                    <i data-lucide="tag" class="w-5 h-5"></i>
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar">
+                        <button type="button" onclick="toggleTag(this)"
+                            class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Dates</button>
+                        <button type="button" onclick="toggleTag(this)"
+                            class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Trips</button>
+                        <button type="button" onclick="toggleTag(this)"
+                            class="px-3 py-1 rounded-full text-xs font-medium border border-slate-300 dark:border-slate-700 hover:border-pink-500 hover:text-pink-500 transition">Random</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <nav
+        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300">
+        <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
+            <a href="home.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Home</span>
+            </a>
+
+            <a href="explore.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Memories</span>
+            </a>
+
+            <div class="relative -top-5">
+                <div class="absolute inset-0 bg-pink-500 rounded-full blur opacity-20 animate-pulse"></div>
+                <button
+                    class="w-14 h-14 bg-pink-500 text-white rounded-full shadow-lg flex items-center justify-center border-4 border-white dark:border-slate-950 transform scale-110">
+                    <i data-lucide="plus" class="w-7 h-7"></i>
+                </button>
+            </div>
+
+            <a href="../him.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Rey</span>
+            </a>
+
+            <a href="../her.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
+                <i data-lucide="heart" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Anya</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Check Theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // --- UPLOAD LOGIC ---
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.getElementById('imagePreview');
+                    const placeholder = document.getElementById('uploadPlaceholder');
+                    const removeBtn = document.getElementById('removeBtn');
+
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    removeBtn.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage(event) {
+            event.preventDefault(); // Mencegah trigger input file lagi
+            const input = document.getElementById('fileInput');
+            const img = document.getElementById('imagePreview');
+            const placeholder = document.getElementById('uploadPlaceholder');
+            const removeBtn = document.getElementById('removeBtn');
+
+            input.value = ''; // Reset input
+            img.src = '';
+            img.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+            removeBtn.classList.add('hidden');
+        }
+
+        function toggleTag(btn) {
+            // Toggle style visual simple
+            if (btn.classList.contains('bg-pink-500')) {
+                btn.classList.remove('bg-pink-500', 'text-white', 'border-transparent');
+                btn.classList.add('text-xs', 'border-slate-300');
+            } else {
+                // Reset others (single select) or keep for multi select. Let's do toggle.
+                btn.classList.add('bg-pink-500', 'text-white', 'border-transparent');
+                btn.classList.remove('text-xs', 'border-slate-300');
+            }
+        }
+
+        function handlePost() {
+            const btn = document.getElementById('postBtn');
+            btn.innerHTML = 'Posting...';
+            btn.disabled = true;
+
+            // Simulasi Upload
+            setTimeout(() => {
+                alert('Memory uploaded successfully! (Simulation)');
+                window.location.href = 'home.html';
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>

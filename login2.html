@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World of Anya | Login</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#FCE7F3',
+                            blue: '#E0F2FE',
+                            accent: '#db2777',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-slate-950 min-h-screen flex items-center justify-center p-4 overflow-hidden relative selection:bg-pink-500 selection:text-white transition-colors duration-500">
+
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div
+            class="absolute top-1/4 left-1/4 w-72 h-72 bg-pink-300 dark:bg-pink-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+        </div>
+        <div
+            class="absolute top-1/3 right-1/4 w-72 h-72 bg-blue-300 dark:bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute -bottom-8 left-1/3 w-72 h-72 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000">
+        </div>
+    </div>
+
+    <div
+        class="relative z-10 w-full max-w-sm bg-white/30 dark:bg-slate-900/30 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl shadow-2xl p-8 transform transition-all hover:scale-[1.01]">
+
+        <div class="text-center mb-8">
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/50 dark:bg-slate-800/50 mb-4 shadow-inner ring-4 ring-white/30 dark:ring-slate-700/30">
+                <i data-lucide="lock" class="w-8 h-8 text-pink-500 dark:text-pink-400"></i>
+            </div>
+            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2 tracking-wide">Welcome Home
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm">Masukin "kode rahasia" kita ya.</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-6">
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i data-lucide="key"
+                        class="w-5 h-5 text-slate-400 group-focus-within:text-pink-500 transition-colors"></i>
+                </div>
+                <input type="password" id="password"
+                    class="block w-full pl-11 pr-12 py-4 bg-white/60 dark:bg-slate-800/60 border border-white/50 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-pink-400 transition-all text-center tracking-[0.3em] font-bold text-lg"
+                    placeholder="••••" maxlength="10" required>
+
+                <button type="button" onclick="togglePassword()"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <button type="submit" id="loginBtn"
+                class="w-full py-4 bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600 text-white rounded-xl font-bold shadow-lg shadow-pink-500/30 transform transition active:scale-95 flex items-center justify-center gap-2">
+                <span>Unlock Our World</span>
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+        </form>
+
+        <div class="mt-8 text-center">
+            <button onclick="showHint()"
+                class="text-xs text-slate-500 dark:text-slate-400 hover:text-pink-500 dark:hover:text-pink-400 transition flex items-center justify-center gap-1 mx-auto">
+                <i data-lucide="help-circle" class="w-3 h-3"></i>
+                <span>Lupa sandinya? (Klik aku)</span>
+            </button>
+            <p id="hintText" class="text-xs text-pink-500 mt-2 font-medium hidden animate-pulse">
+                Hint: Tanggal lahir kamu (2407) atau 'anyacantik' 😉
+            </p>
+
+            <div class="mt-6 pt-6 border-t border-slate-200/50 dark:border-slate-700/50">
+                <a href="index.html"
+                    class="text-xs font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition uppercase tracking-widest">
+                    Back to Gallery
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Dark Mode Check
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        }
+
+        // Toggle Password Visibility
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off'); // Note: Perlu refresh icon klo pake lucide dynamic, tapi ini simpelnya
+                // Krn lucide static, kita ganti logic dikit buat SVG manipulasi atau re-render
+                // Biar gampang, kita biarin aja visualnya berubah jadi "text"
+            } else {
+                input.type = 'password';
+            }
+        }
+
+        function showHint() {
+            document.getElementById('hintText').classList.remove('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const originalText = btn.innerHTML;
+
+            // PASSWORD LOGIC
+            if (pass === '2407' || pass.toLowerCase() === 'anyacantik') {
+
+                // Loading State
+                btn.disabled = true;
+                btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-5 h-5"></i> Opening...`;
+                lucide.createIcons();
+
+                // Simpan sesi login
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // Redirect
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1000);
+
+            } else {
+                // Error Animation
+                const card = document.querySelector('.bg-white\\/30'); // Select glass card
+                card.classList.add('animate-shake');
+                document.getElementById('password').classList.add('border-red-500', 'ring-2', 'ring-red-500/50');
+
+                // Reset Animation
+                setTimeout(() => {
+                    card.classList.remove('animate-shake');
+                    document.getElementById('password').classList.remove('border-red-500', 'ring-2', 'ring-red-500/50');
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                }, 500);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -78,27 +78,4 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Secret Login Logic
-const secretTrigger = document.getElementById('secret-login-trigger');
-if (secretTrigger) {
-    let logoClickCount = 0;
-    secretTrigger.addEventListener('click', (e) => {
-        // Karena ini link <a>, kita prevent default kalau mau fitur klik 5x jalan tanpa pindah halaman
-        // Tapi kalau user mau tetep pindah halaman, fitur ini agak tricky.
-        // Asumsi: User mau fitur ini jalan, jadi kita prevent default kalau belum 5x?
-        // Atau biarkan saja, tapi fitur ini mungkin jarang kepake kalau link aktif.
-        // Kita tambahkan preventDefault sementara biar logicnya jalan.
-
-        logoClickCount++;
-        if (logoClickCount === 5) {
-            e.preventDefault();
-            alert("Welcome back, Rey! (Login feature coming soon)");
-            logoClickCount = 0;
-        }
-
-        // Reset count
-        setTimeout(() => {
-            logoClickCount = 0;
-        }, 2000);
-    });
-}
+// Secret Login Logic handled in index.html

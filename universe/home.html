@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Us | Timeline</title>
+
+    <!-- Load Modular Assets -->
+    <!-- Load Modular Assets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../index.html';
+            }
+        });
+
+        // Theme Check (Prevent Flash)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+
+<!-- Body Background mengikuti style global -->
+
+<body
+    class="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 pb-24 selection:bg-pink-500 selection:text-white">
+
+    <!-- 1. HEADER (Sticky Top) -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="../index.html" class="flex items-center gap-2">
+                <i data-lucide="globe-2" class="w-5 h-5 text-pink-500"></i>
+                <span class="font-serif font-bold text-lg tracking-tight">World of Anya</span>
+            </a>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle (Langsung di Header biar praktis) -->
+                <button onclick="toggleTheme()"
+                    class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i data-lucide="sun" class="w-5 h-5 text-amber-500 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
+                </button>
+
+                <!-- Activity (Love) -->
+                <button class="p-2 relative">
+                    <i data-lucide="heart" class="w-6 h-6 text-slate-600 dark:text-slate-300"></i>
+                    <span
+                        class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+
+                <!-- DM (Chat) -->
+                <button class="p-2">
+                    <i data-lucide="message-circle" class="w-6 h-6 text-slate-600 dark:text-slate-300"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. MAIN CONTENT (Feed) -->
+    <main class="max-w-md mx-auto pt-20 px-4 space-y-6">
+
+        <!-- Stories / Highlights (Horizontal Scroll) -->
+        <div class="flex gap-4 overflow-x-auto no-scrollbar py-2">
+            <!-- Add New -->
+            <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
+                <div
+                    class="w-16 h-16 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
+                    <i data-lucide="plus" class="w-6 h-6 text-slate-400"></i>
+                </div>
+                <span class="text-xs font-medium text-slate-500">New</span>
+            </div>
+
+            <!-- Story Item -->
+            <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
+                <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-orange-500">
+                    <img src="https://ui-avatars.com/api/?name=Dates&background=random"
+                        class="w-full h-full rounded-full border-2 border-white dark:border-slate-900 object-cover">
+                </div>
+                <span class="text-xs font-medium">Dates</span>
+            </div>
+            <!-- Story Item -->
+            <div class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
+                <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-purple-500">
+                    <img src="https://ui-avatars.com/api/?name=Trips&background=random"
+                        class="w-full h-full rounded-full border-2 border-white dark:border-slate-900 object-cover">
+                </div>
+                <span class="text-xs font-medium">Trips</span>
+            </div>
+        </div>
+
+        <!-- Post 1: Standard Photo Post -->
+        <article
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden"
+            data-aos="fade-up">
+            <!-- Header Post -->
+            <div class="p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Rey&background=0D8ABC&color=fff"
+                        class="w-10 h-10 rounded-full">
+                    <div>
+                        <h3 class="font-bold text-sm">Reyvan</h3>
+                        <p class="text-xs text-slate-500">Jakarta, Indonesia</p>
+                    </div>
+                </div>
+                <button><i data-lucide="more-horizontal" class="w-5 h-5 text-slate-400"></i></button>
+            </div>
+
+            <!-- Image -->
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800">
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                    class="w-full h-full object-cover">
+            </div>
+
+            <!-- Actions & Caption -->
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex gap-4">
+                        <button><i data-lucide="heart" class="w-6 h-6 hover:text-pink-500 transition"></i></button>
+                        <button><i data-lucide="message-circle"
+                                class="w-6 h-6 hover:text-blue-500 transition"></i></button>
+                        <button><i data-lucide="send"
+                                class="w-6 h-6 -rotate-45 hover:text-green-500 transition mt-1"></i></button>
+                    </div>
+                    <button><i data-lucide="bookmark" class="w-6 h-6 hover:text-yellow-500 transition"></i></button>
+                </div>
+
+                <p class="text-sm font-bold mb-1">24 likes</p>
+                <p class="text-sm leading-relaxed">
+                    <span class="font-bold mr-1">Reyvan</span>
+                    Chapter one of our story. Masih inget gak ini kapan? 😜 <span
+                        class="text-blue-500">#FirstDate</span>
+                </p>
+                <p class="text-xs text-slate-400 mt-2 uppercase">2 Hours Ago</p>
+            </div>
+        </article>
+
+        <!-- Post 2: Quote/Note Post -->
+        <article
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden"
+            data-aos="fade-up">
+            <div class="p-4 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800">
+                <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                    <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                </div>
+                <span class="font-bold text-sm">Daily Note</span>
+            </div>
+
+            <div
+                class="p-8 bg-gradient-to-br from-pink-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 text-center">
+                <p class="font-serif text-lg italic text-slate-700 dark:text-slate-300">
+                    "I look at you and see the rest of my life in front of my eyes."
+                </p>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- 3. BOTTOM NAVIGATION (Fixed) -->
+    <nav
+        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe">
+        <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
+            <!-- Home (Active) -->
+            <a href="#" class="flex flex-col items-center justify-center w-14 h-full text-pink-500">
+                <i data-lucide="home" class="w-6 h-6 fill-current"></i>
+                <span class="text-[10px] font-medium mt-0.5">Home</span>
+            </a>
+
+            <!-- Memories -->
+            <a href="explore.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Memories</span>
+            </a>
+
+            <!-- ADD Button (Center) -->
+            <div class="relative -top-5">
+                <button
+                    class="w-14 h-14 bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform hover:scale-105">
+                    <i data-lucide="plus" class="w-7 h-7"></i>
+                </button>
+            </div>
+
+            <!-- Him -->
+            <a href="../him.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Rey</span>
+            </a>
+
+            <!-- Her -->
+            <a href="../her.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
+                <i data-lucide="heart" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Anya</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Load Logic -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../js/script.js"></script>
+
+</body>
+
+</html>
