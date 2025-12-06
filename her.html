@@ -159,64 +159,13 @@
         <div class="flex gap-4 md:gap-8 overflow-x-auto pt-4 pb-4 mb-10 justify-start md:justify-center no-scrollbar px-2"
             data-aos="fade-up" data-aos-delay="50">
 
-            <!-- Highlight Item: Dates -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-brand-accent to-purple-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="heart" class="w-6 h-6 text-pink-500 fill-pink-50"></i>
-                    </div>
+            <!-- Dynamic Highlights List -->
+            <div id="highlightsList" class="flex gap-4">
+                <!-- Loading placeholder -->
+                <div class="flex flex-col items-center gap-2 min-w-[64px] animate-pulse">
+                    <div class="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                    <div class="w-12 h-2 rounded bg-slate-200 dark:bg-slate-800"></div>
                 </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Dates</span>
-            </div>
-
-            <!-- Highlight Item: Trips -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-400 to-cyan-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="plane" class="w-6 h-6 text-blue-500"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Trips</span>
-            </div>
-
-            <!-- Highlight Item: Food -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-400 to-orange-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="coffee" class="w-6 h-6 text-amber-600"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Food</span>
-            </div>
-
-            <!-- Highlight Item: Silly -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-teal-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="smile" class="w-6 h-6 text-emerald-500"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Silly</span>
-            </div>
-
-            <!-- Highlight Item: 2025 -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-slate-200 dark:bg-slate-700 group-hover:scale-110 transition-transform duration-300">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <span class="text-[10px] font-bold text-slate-400">2025</span>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-400">Memories</span>
             </div>
         </div>
 
@@ -313,12 +262,51 @@
                     if (data.photo) document.getElementById('her-photo').src = data.photo;
                     if (data.title) document.getElementById('her-title').textContent = data.title;
                     
+                    // Load highlights with fallback
+                    renderHighlights(data.highlights || []);
+                    
                     // Hide loading pulse
                     document.getElementById('her-photo-pulse')?.classList.add('hidden');
+                } else {
+                    // No data - show fallback
+                    renderHighlights([]);
                 }
             } catch (error) {
                 console.error('Failed to load profile:', error);
+                renderHighlights([]);
             }
+        }
+        
+        function renderHighlights(highlights) {
+            const container = document.getElementById('highlightsList');
+            if (!container) return;
+            
+            if (!highlights || highlights.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-4 px-8 text-center">
+                        <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-2">
+                            <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <p class="text-slate-400 text-xs">No highlights yet</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = highlights.map(h => `
+                <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr ${h.gradient} group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                            <i data-lucide="${h.icon}" class="w-6 h-6 ${h.iconColor}"></i>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">${h.name}</span>
+                </div>
+            `).join('');
+            
+            // Re-initialize Lucide icons
+            lucide.createIcons();
         }
         
         loadProfile();

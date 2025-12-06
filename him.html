@@ -152,52 +152,13 @@
         <div class="flex gap-4 md:gap-8 overflow-x-auto py-4 mb-6 justify-start md:justify-center no-scrollbar px-2 relative z-10"
             data-aos="fade-up" data-aos-delay="50">
 
-            <!-- Highlight: Her (Folder khusus foto dia) -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-rose-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="camera" class="w-6 h-6 text-pink-500"></i>
-                    </div>
+            <!-- Dynamic Highlights List -->
+            <div id="highlightsList" class="flex gap-4">
+                <!-- Loading placeholder -->
+                <div class="flex flex-col items-center gap-2 min-w-[64px] animate-pulse">
+                    <div class="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                    <div class="w-12 h-2 rounded bg-slate-200 dark:bg-slate-800"></div>
                 </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Her</span>
-            </div>
-
-            <!-- Highlight: Work/Grind -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-700 to-slate-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="briefcase" class="w-6 h-6 text-slate-600 dark:text-slate-400"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Grind</span>
-            </div>
-
-            <!-- Highlight: Tech/Hobby -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-500 to-cyan-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="cpu" class="w-6 h-6 text-blue-500"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Tech</span>
-            </div>
-
-            <!-- Highlight: Music -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-green-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="headphones" class="w-6 h-6 text-emerald-500"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Vibe</span>
             </div>
         </div>
 
@@ -289,12 +250,51 @@
                     if (data.photo) document.getElementById('him-photo').src = data.photo;
                     if (data.title) document.getElementById('him-title').textContent = data.title;
                     
+                    // Load highlights with fallback
+                    renderHighlights(data.highlights || []);
+                    
                     // Hide loading pulse
                     document.getElementById('him-photo-pulse')?.classList.add('hidden');
+                } else {
+                    // No data - show fallback
+                    renderHighlights([]);
                 }
             } catch (error) {
                 console.error('Failed to load profile:', error);
+                renderHighlights([]);
             }
+        }
+        
+        function renderHighlights(highlights) {
+            const container = document.getElementById('highlightsList');
+            if (!container) return;
+            
+            if (!highlights || highlights.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-4 px-8 text-center">
+                        <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-2">
+                            <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <p class="text-slate-400 text-xs">No highlights yet</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = highlights.map(h => `
+                <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr ${h.gradient} group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                            <i data-lucide="${h.icon}" class="w-6 h-6 ${h.iconColor}"></i>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">${h.name}</span>
+                </div>
+            `).join('');
+            
+            // Re-initialize Lucide icons
+            lucide.createIcons();
         }
         
         loadProfile();
