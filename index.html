@@ -303,142 +303,6 @@
             </div>
         </section>
 
-        <!-- LOVE PROGRESS SECTION -->
-        <section id="love-progress-section"
-            class="py-20 px-4 md:px-6 bg-gradient-to-br from-pink-50/50 via-white/30 to-blue-50/50 dark:from-slate-900/80 dark:via-slate-900/50 dark:to-slate-950/80 transition-colors">
-            <div class="max-w-4xl mx-auto">
-                <!-- Header -->
-                <div class="text-center mb-12" data-aos="fade-up">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full bg-pink-100/50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800/30">
-                        <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
-                        <span
-                            class="text-xs font-bold tracking-widest uppercase text-pink-600 dark:text-pink-400">Perjalanan
-                            Pulang</span>
-                    </div>
-                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-                        Dia bilang <span id="progress-display"
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">0%</span>...
-                    </h2>
-                    <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-                        Angka ini bukan buatan. Bukan editan. Ini jawaban jujur dari dia, untuk pertanyaan yang sama:
-                        <span class="italic font-medium text-pink-600 dark:text-pink-400">"Sudah berapa persen hatimu
-                            kembali?"</span>
-                    </p>
-                </div>
-
-                <!-- Progress Card -->
-                <div class="glass-card rounded-3xl p-6 md:p-10 border border-pink-200/50 dark:border-pink-800/30 shadow-2xl shadow-pink-500/10"
-                    data-aos="fade-up" data-aos-delay="100">
-
-                    <!-- Main Progress Display -->
-                    <div class="flex items-center gap-4 md:gap-8 mb-8">
-                        <!-- Sasuke (0%) -->
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="relative">
-                                <div
-                                    class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 shadow-lg">
-                                    <img src="https://i.pinimg.com/736x/f8/6b/e3/f86be38f3971dfd29ae5bee32019bbdc.jpg">
-                                </div>
-                                <div
-                                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-slate-500 flex items-center justify-center text-white text-xs font-bold shadow">
-                                    🖤</div>
-                            </div>
-                            <span class="text-xs font-bold text-slate-400 dark:text-slate-500 tracking-wide">0%</span>
-                            <span
-                                class="text-[10px] text-slate-400 dark:text-slate-600 italic hidden md:block">Stranger</span>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div class="flex-1">
-                            <div class="relative">
-                                <!-- Background -->
-                                <div
-                                    class="h-4 md:h-5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
-                                    <!-- Progress Fill -->
-                                    <div id="landing-progress-bar"
-                                        class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out relative"
-                                        style="width: 0%">
-                                        <div
-                                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Progress Indicator -->
-                                <div id="landing-progress-indicator"
-                                    class="absolute -top-8 transform -translate-x-1/2 transition-all duration-1000 ease-out"
-                                    style="left: 0%">
-                                    <div
-                                        class="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg shadow-pink-500/30">
-                                        <span id="landing-progress-value">0</span>%
-                                    </div>
-                                    <div
-                                        class="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-pink-500 mx-auto">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Milestone Message -->
-                            <div class="mt-6 text-center">
-                                <span id="landing-milestone-emoji" class="text-3xl mb-2 block">💙</span>
-                                <p id="landing-milestone-text"
-                                    class="text-slate-600 dark:text-slate-300 font-medium italic">"Starting from
-                                    zero..."</p>
-                            </div>
-                        </div>
-
-                        <!-- Rey (100%) -->
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="relative">
-                                <div
-                                    class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-pink-400 dark:border-pink-500 bg-pink-100 dark:bg-pink-900/30 shadow-lg shadow-pink-500/30 ring-4 ring-pink-200/50 dark:ring-pink-800/30">
-                                    <img id="landing-rey-photo"
-                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                        alt="Rey" class="w-full h-full object-cover">
-                                </div>
-                                <div
-                                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs font-bold shadow animate-pulse">
-                                    💕</div>
-                            </div>
-                            <span class="text-xs font-bold text-pink-500 dark:text-pink-400 tracking-wide">100%</span>
-                            <span
-                                class="text-[10px] text-pink-400 dark:text-pink-500 italic hidden md:block">Together</span>
-                        </div>
-                    </div>
-
-                    <!-- Footer Info -->
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200/50 dark:border-slate-700/50">
-                        <!-- Last Update -->
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                            <i data-lucide="clock" class="w-4 h-4"></i>
-                            <span>Update terakhir: <span id="landing-last-update" class="font-medium">-</span></span>
-                        </div>
-
-                        <!-- Visitor Counter -->
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                            <i data-lucide="users" class="w-4 h-4"></i>
-                            <span><span id="visitor-count" class="font-bold text-pink-500">0</span> orang ikut
-                                mendoakan</span>
-                        </div>
-
-                        <!-- Share Button -->
-                        <button onclick="shareLoveProgress()"
-                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-all hover:scale-105">
-                            <i data-lucide="share-2" class="w-4 h-4"></i>
-                            Share
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Extra Note -->
-                <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-6 italic" data-aos="fade-up"
-                    data-aos-delay="200">
-                    Progress ini dia yang update. Aku cuma bisa nunggu... dan berharap. 🥺
-                </p>
-            </div>
-        </section>
-
         <section
             class="py-20 px-4 md:px-6 bg-white/20 dark:bg-slate-900/30 backdrop-blur-sm dark:border-slate-800 transition-colors">
             <div class="max-w-6xl mx-auto">
@@ -597,6 +461,143 @@
                         🥰 💝 🌹
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- LOVE PROGRESS SECTION -->
+        <section id="love-progress-section"
+            class="py-20 px-4 md:px-6 bg-gradient-to-br from-pink-50/50 via-white/30 to-blue-50/50 dark:from-slate-900/80 dark:via-slate-900/50 dark:to-slate-950/80 transition-colors">
+            <div class="max-w-4xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full bg-pink-100/50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800/30">
+                        <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
+                        <span
+                            class="text-xs font-bold tracking-widest uppercase text-pink-600 dark:text-pink-400">Perjalanan
+                            Pulang</span>
+                    </div>
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
+                        Dia bilang <span id="progress-display"
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">0%</span>...
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+                        Angka ini bukan buatan. Bukan editan. Ini jawaban jujur dari dia, untuk pertanyaan yang sama:
+                        <span class="italic font-medium text-pink-600 dark:text-pink-400">"Sudah berapa persen hatimu
+                            kembali?"</span>
+                    </p>
+                </div>
+
+                <!-- Progress Card -->
+                <div class="glass-card rounded-3xl p-6 md:p-10 border border-pink-200/50 dark:border-pink-800/30 shadow-2xl shadow-pink-500/10"
+                    data-aos="fade-up" data-aos-delay="100">
+
+                    <!-- Main Progress Display -->
+                    <div class="flex items-center gap-4 md:gap-8 mb-8">
+                        <!-- Sasuke (0%) -->
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="relative">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 shadow-lg">
+                                    <img src="https://i.pinimg.com/736x/f8/6b/e3/f86be38f3971dfd29ae5bee32019bbdc.jpg"
+                                        alt="Sasuke" class="w-full h-full object-cover grayscale">
+                                </div>
+                                <div
+                                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-slate-500 flex items-center justify-center text-white text-xs font-bold shadow">
+                                    🖤</div>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400 dark:text-slate-500 tracking-wide">0%</span>
+                            <span
+                                class="text-[10px] text-slate-400 dark:text-slate-600 italic hidden md:block">Stranger</span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="flex-1">
+                            <div class="relative">
+                                <!-- Background -->
+                                <div
+                                    class="h-4 md:h-5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
+                                    <!-- Progress Fill -->
+                                    <div id="landing-progress-bar"
+                                        class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out relative"
+                                        style="width: 0%">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Progress Indicator -->
+                                <div id="landing-progress-indicator"
+                                    class="absolute -top-8 transform -translate-x-1/2 transition-all duration-1000 ease-out"
+                                    style="left: 0%">
+                                    <div
+                                        class="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg shadow-pink-500/30">
+                                        <span id="landing-progress-value">0</span>%
+                                    </div>
+                                    <div
+                                        class="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-pink-500 mx-auto">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Milestone Message -->
+                            <div class="mt-6 text-center">
+                                <span id="landing-milestone-emoji" class="text-3xl mb-2 block">💙</span>
+                                <p id="landing-milestone-text"
+                                    class="text-slate-600 dark:text-slate-300 font-medium italic">"Starting from
+                                    zero..."</p>
+                            </div>
+                        </div>
+
+                        <!-- Rey (100%) -->
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="relative">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-pink-400 dark:border-pink-500 bg-pink-100 dark:bg-pink-900/30 shadow-lg shadow-pink-500/30 ring-4 ring-pink-200/50 dark:ring-pink-800/30">
+                                    <img id="landing-rey-photo"
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        alt="Rey" class="w-full h-full object-cover">
+                                </div>
+                                <div
+                                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs font-bold shadow animate-pulse">
+                                    💕</div>
+                            </div>
+                            <span class="text-xs font-bold text-pink-500 dark:text-pink-400 tracking-wide">100%</span>
+                            <span
+                                class="text-[10px] text-pink-400 dark:text-pink-500 italic hidden md:block">Together</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Info -->
+                    <div
+                        class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200/50 dark:border-slate-700/50">
+                        <!-- Last Update -->
+                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                            <span>Update terakhir: <span id="landing-last-update" class="font-medium">-</span></span>
+                        </div>
+
+                        <!-- Visitor Counter -->
+                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <i data-lucide="users" class="w-4 h-4"></i>
+                            <span><span id="visitor-count" class="font-bold text-pink-500">0</span> orang ikut
+                                mendoakan</span>
+                        </div>
+
+                        <!-- Share Button -->
+                        <button onclick="shareLoveProgress()"
+                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-all hover:scale-105">
+                            <i data-lucide="share-2" class="w-4 h-4"></i>
+                            Share
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Extra Note -->
+                <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-6 italic" data-aos="fade-up"
+                    data-aos-delay="200">
+                    Progress ini dia yang update. Aku cuma bisa nunggu... dan berharap. 🥺
+                </p>
             </div>
         </section>
 
