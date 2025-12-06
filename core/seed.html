@@ -29,6 +29,12 @@
             <p class="text-pink-300 text-xs text-center mt-2 italic">"intinya aku ga minta apa apa, aku cm minta km tepati ketikan dan omongan kamu 😊 cukup itu"</p>
         </div>
         
+        <div class="mb-4">
+            <button onclick="seedSasukeImage()" id="seedSasukeBtn" class="w-full py-3 bg-gradient-to-r from-slate-600 to-slate-800 rounded-xl font-bold text-lg hover:opacity-90 transition">
+                🖤 Seed Sasuke Image (0% Marker)
+            </button>
+        </div>
+        
         <p class="text-amber-400 text-sm text-center mb-4">⚠️ "Seed All Data" akan overwrite semua data. Gunakan "Seed Gallery Only" untuk update gallery tanpa menghapus data lain.</p>
         
         <div class="mt-8 p-4 bg-slate-800 rounded-xl">
@@ -192,6 +198,14 @@
                     { id: 4, url: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&q=80", caption: "Beautiful", showOnProfile: true }
                 ],
                 updatedAt: new Date()
+            },
+            
+            // Sasuke Image (for love progress 0%)
+            sasukeImage: {
+                url: "data:image/jpeg;base64,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",
+                name: "Sasuke Uchiha",
+                description: "0% - Stranger/Friendzone marker",
+                updatedAt: new Date()
             }
         };
 
@@ -241,6 +255,38 @@
                 console.error('Seed love progress error:', error);
                 addStatus(`Error: ${error.message}`, false);
                 btn.className = 'w-full py-4 bg-red-600 rounded-xl font-bold text-lg';
+                btn.textContent = '❌ Failed';
+            }
+        };
+
+        // Seed Sasuke Image - Independent document for love progress
+        window.seedSasukeImage = async function() {
+            const btn = document.getElementById('seedSasukeBtn');
+            const status = document.getElementById('status');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Uploading Sasuke Image...';
+            status.innerHTML = '';
+
+            const addStatus = (message, success = true) => {
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-lg ${success ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`;
+                div.innerHTML = `${success ? '✅' : '❌'} ${message}`;
+                status.appendChild(div);
+            };
+
+            try {
+                await setDoc(doc(db, "landing", "sasukeImage"), seedData.sasukeImage);
+                addStatus('🖤 Sasuke image seeded (0% marker for love progress)');
+                addStatus('Image stored as base64 - no external dependencies');
+
+                btn.className = 'w-full py-3 bg-green-600 rounded-xl font-bold text-lg';
+                btn.textContent = '✅ Sasuke Image Seeded!';
+
+            } catch (error) {
+                console.error('Seed sasuke image error:', error);
+                addStatus(`Error: ${error.message}`, false);
+                btn.className = 'w-full py-3 bg-red-600 rounded-xl font-bold text-lg';
                 btn.textContent = '❌ Failed';
             }
         };

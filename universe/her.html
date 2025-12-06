@@ -724,6 +724,15 @@
                 // Show the section
                 document.getElementById('loveProgressSection')?.classList?.remove('hidden');
                 
+                // Load Sasuke's image for 0% marker
+                const sasukeDoc = await getDoc(doc(db, 'landing', 'sasukeImage'));
+                if (sasukeDoc.exists() && sasukeDoc.data().url) {
+                    const sasukeImg = document.querySelector('#loveProgressSection img[alt="Sasuke"]');
+                    if (sasukeImg) {
+                        sasukeImg.src = sasukeDoc.data().url;
+                    }
+                }
+                
                 // Load Rey's photo for the progress bar
                 const reyDoc = await getDoc(doc(db, 'landing', 'profileRey'));
                 if (reyDoc.exists() && reyDoc.data().photo) {

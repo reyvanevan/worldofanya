@@ -859,6 +859,15 @@
                     });
                 }
 
+                // Load Sasuke's image for 0% marker
+                const sasukeDoc = await getDoc(doc(db, "landing", "sasukeImage"));
+                if (sasukeDoc.exists() && sasukeDoc.data().url) {
+                    const sasukeImg = document.querySelector('#love-progress-section img[alt="Sasuke"]');
+                    if (sasukeImg) {
+                        sasukeImg.src = sasukeDoc.data().url;
+                    }
+                }
+
                 // Load Rey's profile photo for the 100% side
                 const profileDoc = await getDoc(doc(db, "landing", "profileRey"));
                 if (profileDoc.exists()) {
