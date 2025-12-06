@@ -816,6 +816,9 @@
             if (quoteInput) quoteInput.addEventListener('input', () => {
                 document.getElementById('letter-preview-quote').textContent = '"' + (quoteInput.value || 'I love you, today and forever.') + '"';
             });
+            
+            // Load Sasuke image
+            loadSasukeImage();
         });
 
         // Make loadDashboardData available globally for refresh
@@ -1227,6 +1230,60 @@
                     </div>
                 </div>
                 
+                <!-- Sasuke Image Upload (Love Progress 0% Marker) -->
+                <div class="p-4 md:p-8 border-t border-slate-200/50 dark:border-slate-700/50">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🖤</span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 dark:text-white">Sasuke Image</h4>
+                                <p class="text-xs text-slate-400">0% marker for Love Progress (landing/sasukeImage)</p>
+                            </div>
+                        </div>
+                        <button onclick="saveSasukeImage()" id="saveSasukeBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white text-sm font-medium rounded-full shadow-lg transition flex items-center gap-2">
+                            <i data-lucide="save" class="w-4 h-4"></i> Save Image
+                        </button>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold mb-3 text-slate-700 dark:text-slate-300">Upload Sasuke Image</label>
+                            <div class="relative group rounded-xl overflow-hidden aspect-square border-4 border-slate-300 dark:border-slate-700 shadow-xl max-w-xs mx-auto">
+                                <img id="sasukePreview" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                                
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer backdrop-blur-sm">
+                                    <button type="button" class="bg-white/90 text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg hover:bg-white transition">
+                                        <i data-lucide="upload" class="w-4 h-4"></i> Change Image
+                                    </button>
+                                </div>
+                                <input type="file" id="sasukeImageInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="updateSasukePreview(this)">
+                            </div>
+                            <p class="text-xs text-center text-slate-400 mt-3">Recommended: Square 1:1</p>
+                        </div>
+                        
+                        <div class="flex flex-col justify-center">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Name/Label</label>
+                                    <input type="text" id="sasukeName" value="Sasuke Uchiha" placeholder="Sasuke" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Description</label>
+                                    <input type="text" id="sasukeDescription" value="0% - Stranger/Friendzone marker" placeholder="Description" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                                    <p class="text-xs text-slate-600 dark:text-slate-400">
+                                        <strong>Info:</strong> Image ini akan muncul sebagai marker 0% di Love Progress section. 
+                                        Upload gambar Sasuke atau karakter lain yang mewakili "friendzone".
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Gallery Section -->
                 <div class="p-4 md:p-8 border-t border-slate-200/50 dark:border-slate-700/50">
                     <div class="flex items-center justify-between mb-4">
@@ -1619,6 +1676,92 @@
                     document.getElementById(imgId).src = e.target.result;
                 }
                 reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Sasuke Image Upload Functions
+        function updateSasukePreview(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('sasukePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function saveSasukeImage() {
+            const fileInput = document.getElementById('sasukeImageInput');
+            const name = document.getElementById('sasukeName').value.trim();
+            const description = document.getElementById('sasukeDescription').value.trim();
+            const saveBtn = document.getElementById('saveSasukeBtn');
+            
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Please select an image first');
+                return;
+            }
+            
+            if (!name) {
+                alert('Please enter a name/label');
+                return;
+            }
+            
+            try {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Saving...';
+                lucide.createIcons();
+                
+                // Compress image to Base64 (600px max width, 0.8 quality)
+                const base64Image = await window.compressImageToBase64(fileInput.files[0], 600, 0.8);
+                
+                // Save to Firestore landing/sasukeImage
+                const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const { db } = await import('../js/firebase-config.js');
+                
+                await setDoc(doc(db, 'landing', 'sasukeImage'), {
+                    url: base64Image,
+                    name: name,
+                    description: description,
+                    updatedAt: serverTimestamp()
+                });
+                
+                saveBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
+                saveBtn.classList.remove('bg-slate-700');
+                saveBtn.classList.add('bg-green-600');
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Image';
+                    saveBtn.classList.remove('bg-green-600');
+                    saveBtn.classList.add('bg-slate-700');
+                    saveBtn.disabled = false;
+                    lucide.createIcons();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Save error:', error);
+                alert('Failed to save image: ' + error.message);
+                saveBtn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Image';
+                saveBtn.disabled = false;
+                lucide.createIcons();
+            }
+        }
+
+        // Load Sasuke image on page load
+        async function loadSasukeImage() {
+            try {
+                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const { db } = await import('../js/firebase-config.js');
+                
+                const sasukeDoc = await getDoc(doc(db, 'landing', 'sasukeImage'));
+                if (sasukeDoc.exists()) {
+                    const data = sasukeDoc.data();
+                    document.getElementById('sasukePreview').src = data.url || '';
+                    document.getElementById('sasukeName').value = data.name || 'Sasuke Uchiha';
+                    document.getElementById('sasukeDescription').value = data.description || '0% - Stranger/Friendzone marker';
+                }
+            } catch (error) {
+                console.error('Error loading Sasuke image:', error);
             }
         }
 
