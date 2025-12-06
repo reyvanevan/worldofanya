@@ -228,6 +228,19 @@
         import { db } from './js/firebase-config.js';
         import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         
+        // Fallback data when Firestore unavailable
+        const FALLBACK = {
+            photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+            name: 'Zalfa Nazhifah',
+            title: 'The Main Character',
+            bio: 'She is the poem I never knew how to write, and this life is the paper.'
+        };
+        
+        function loadFallback() {
+            document.getElementById('her-photo').src = FALLBACK.photo;
+            document.getElementById('her-photo-pulse')?.classList.add('hidden');
+        }
+        
         async function loadProfile() {
             try {
                 // Load from profileHer (Princess Profile section in dashboard)
@@ -251,11 +264,13 @@
                     document.getElementById('her-photo-pulse')?.classList.add('hidden');
                 } else {
                     // No data - show fallback
+                    loadFallback();
                     renderHighlights([]);
                     renderGallery([]);
                 }
             } catch (error) {
                 console.error('Failed to load profile:', error);
+                loadFallback();
                 renderHighlights([]);
                 renderGallery([]);
             }

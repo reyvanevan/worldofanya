@@ -507,6 +507,42 @@
         }
 
         // Load all content from Firestore
+        // Default fallback data (used when Firestore unavailable)
+        const FALLBACK_DATA = {
+            profile: {
+                photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+            },
+            gallery: [
+                { url: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', caption: 'The Smile' },
+                { url: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80', caption: 'Our Favorite Place' },
+                { url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80', caption: 'The Day We Laughed' },
+                { url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', caption: 'Cantik Banget' }
+            ],
+            memories: [
+                { image: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' },
+                { image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' }
+            ]
+        };
+
+        // Load fallback images to prevent skeleton stuck
+        function loadFallbackImages() {
+            // Profile
+            const profileImg = document.getElementById('profile-img');
+            if (profileImg) profileImg.src = FALLBACK_DATA.profile.photo;
+            
+            // Gallery
+            FALLBACK_DATA.gallery.forEach((item, i) => {
+                const img = document.getElementById(`gallery-img-${i + 1}`);
+                if (img) img.src = item.url;
+            });
+            
+            // Memories
+            FALLBACK_DATA.memories.forEach((item, i) => {
+                const img = document.getElementById(`memory-img-${i + 1}`);
+                if (img) img.src = item.image;
+            });
+        }
+
         async function loadLandingData() {
             try {
                 // Load Profile
@@ -591,6 +627,8 @@
                 console.log('✅ Landing data loaded from Firestore');
             } catch (error) {
                 console.log('Data loading skipped (using defaults):', error.message);
+                // Load fallback images so skeleton doesn't get stuck
+                loadFallbackImages();
             }
         }
 
