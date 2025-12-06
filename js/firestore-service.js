@@ -699,6 +699,21 @@ export function getMilestone(progress) {
 }
 
 /**
+ * Get milestone message based on progress value
+ * @param {number} progress - Progress value 0-100
+ * @returns {Object} { emoji, message, color }
+ */
+export function getMilestoneMessage(progress) {
+    if (progress === 0) return { emoji: '🖤', message: 'Belum mulai...', color: 'slate' };
+    if (progress < 20) return { emoji: '🌱', message: 'Baru mulai tumbuh kembali...', color: 'emerald' };
+    if (progress < 40) return { emoji: '🌸', message: 'Ada sesuatu yang mulai kembali...', color: 'pink' };
+    if (progress < 60) return { emoji: '💛', message: 'Setengah jalan pulang...', color: 'yellow' };
+    if (progress < 80) return { emoji: '🧡', message: 'Semakin dekat...', color: 'orange' };
+    if (progress < 100) return { emoji: '💗', message: 'Hampir sampai...', color: 'rose' };
+    return { emoji: '💕', message: "I'm home. Welcome back, my love.", color: 'pink' };
+}
+
+/**
  * Get love progress from Firestore
  */
 export async function getLoveProgress() {
