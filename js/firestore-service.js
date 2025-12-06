@@ -665,3 +665,140 @@ export async function getHighlightStories(highlightId) {
     // Sort by createdAt desc
     return stories.sort((a, b) => b.createdAt - a.createdAt);
 }
+
+// ==================== LOVE PROGRESS ====================
+
+/**
+ * Milestone messages based on progress percentage
+ */
+export const LOVE_MILESTONES = {
+    0: { emoji: '💔', message: 'Starting from zero...', color: 'slate' },
+    10: { emoji: '🌱', message: 'A small seed of hope', color: 'slate' },
+    20: { emoji: '💙', message: 'Dia bilang 20%... dan itu sudah bikin aku senyum seharian.', color: 'blue' },
+    30: { emoji: '🌸', message: 'Perlahan tapi pasti...', color: 'blue' },
+    40: { emoji: '💜', message: 'Getting closer each day', color: 'purple' },
+    50: { emoji: '💗', message: 'Halfway there! Keep going...', color: 'pink' },
+    60: { emoji: '💕', message: 'More than friends now?', color: 'pink' },
+    70: { emoji: '💖', message: 'Almost there... I can feel it', color: 'pink' },
+    80: { emoji: '💝', message: 'So close to home...', color: 'rose' },
+    90: { emoji: '💘', message: 'Just a little more...', color: 'rose' },
+    100: { emoji: '❤️', message: 'Welcome back, my love. Aku pulang.', color: 'red' }
+};
+
+/**
+ * Get milestone for current progress
+ */
+export function getMilestone(progress) {
+    const milestones = Object.keys(LOVE_MILESTONES).map(Number).sort((a, b) => b - a);
+    for (const threshold of milestones) {
+        if (progress >= threshold) {
+            return LOVE_MILESTONES[threshold];
+        }
+    }
+    return LOVE_MILESTONES[0];
+}
+
+/**
+ * Get love progress from Firestore
+ */
+export async function getLoveProgress() {
+    try {
+        const docRef = doc(db, 'landing', 'loveProgress');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            return {
+                currentProgress: data.currentProgress || 0,
+                lastUpdate: data.lastUpdate?.toDate() || null,
+                lastUpdatedBy: data.lastUpdatedBy || 'anya',
+                history: (data.history || []).map(h => ({
+                    ...h,
+                    date: h.date?.toDate() || new Date()
+                })),
+                visitorCount: data.visitorCount || 0
+            };
+        }
+        
+        return {
+            currentProgress: 0,
+            lastUpdate: null,
+            lastUpdatedBy: 'anya',
+            history: [],
+            visitorCount: 0
+        };
+    } catch (error) {
+        console.error('Error getting love progress:', error);
+        throw error;
+    }
+}
+
+/**
+ * Update love progress (only Princess can update)
+ */
+export async function updateLoveProgress(newProgress, note = '') {
+    try {
+        const user = auth.currentUser;
+        if (!user) throw new Error('Must be logged in');
+        
+        const author = getCurrentAuthor(user);
+        if (author !== 'anya') throw new Error('Only Princess can update this');
+        
+        const docRef = doc(db, 'landing', 'loveProgress');
+        const docSnap = await getDoc(docRef);
+        
+        const currentData = docSnap.exists() ? docSnap.data() : { history: [], visitorCount: 0 };
+        const history = currentData.history || [];
+        
+        // Add to history
+        history.push({
+            date: serverTimestamp(),
+            value: newProgress,
+            note: note || getMilestone(newProgress).message
+        });
+        
+        await updateDoc(docRef, {
+            currentProgress: newProgress,
+            lastUpdate: serverTimestamp(),
+            lastUpdatedBy: 'anya',
+            history: history
+        });
+        
+        return { success: true };
+    } catch (error) {
+        console.error('Error updating love progress:', error);
+        throw error;
+    }
+}
+
+/**
+ * Increment visitor count
+ */
+export async function incrementVisitorCount() {
+    try {
+        const docRef = doc(db, 'landing', 'loveProgress');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            const currentCount = docSnap.data().visitorCount || 0;
+            await updateDoc(docRef, {
+                visitorCount: currentCount + 1
+            });
+            return currentCount + 1;
+        } else {
+            // Initialize document if doesn't exist
+            const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+            await setDoc(docRef, {
+                currentProgress: 0,
+                lastUpdate: serverTimestamp(),
+                lastUpdatedBy: 'system',
+                history: [],
+                visitorCount: 1
+            });
+            return 1;
+        }
+    } catch (error) {
+        console.error('Error incrementing visitor count:', error);
+        return 0;
+    }
+}
