@@ -514,6 +514,10 @@
                     if (data.photo) document.getElementById('her-photo').src = data.photo;
                     if (data.title) document.getElementById('her-title').textContent = data.title;
                     
+                    // Load highlights from profile document
+                    userHighlights = data.highlights || [];
+                    renderHighlightsFromProfile(userHighlights);
+                    
                     // Load gallery (only photos with showOnProfile: true)
                     const visiblePhotos = (data.gallery || []).filter(p => p.showOnProfile);
                     renderGallery(visiblePhotos);
@@ -559,6 +563,38 @@
         
         // Initialize
         loadProfile();
+        
+        // Render highlights from profile document (public, no auth needed)
+        function renderHighlightsFromProfile(highlights) {
+            const container = document.getElementById('highlightsList');
+            if (!container) return;
+            
+            if (!highlights || highlights.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center gap-2 min-w-[64px] text-center">
+                        <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                            <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <span class="text-[10px] text-slate-400">No highlights</span>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = highlights.map(h => `
+                <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr ${h.gradient || 'from-pink-400 to-rose-500'} group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                            <i data-lucide="${h.icon || 'star'}" class="w-6 h-6 ${h.iconColor || 'text-pink-500'}"></i>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">${h.name || ''}</span>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
         
         // Gradient class mapping
         const GRADIENT_CLASSES = {
