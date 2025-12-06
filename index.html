@@ -626,9 +626,8 @@
 
                 console.log('✅ Landing data loaded from Firestore');
             } catch (error) {
-                console.log('Data loading skipped (using defaults):', error.message);
-                // Load fallback images so skeleton doesn't get stuck
-                loadFallbackImages();
+                console.log('Data loading skipped (skeleton remains):', error.message);
+                // Keep skeleton loading - don't load fallback photos
             }
         }
 

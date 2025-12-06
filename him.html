@@ -257,16 +257,13 @@
                     // Hide loading pulse
                     document.getElementById('him-photo-pulse')?.classList.add('hidden');
                 } else {
-                    // No data - show fallback
-                    loadFallback();
+                    // No data - keep skeleton, show empty highlights/gallery
                     renderHighlights([]);
                     renderGallery([]);
                 }
             } catch (error) {
-                console.error('Failed to load profile:', error);
-                loadFallback();
-                renderHighlights([]);
-                renderGallery([]);
+                console.error('Failed to load profile (skeleton remains):', error);
+                // Keep skeleton loading - don't load fallback photos
             }
         }
         
