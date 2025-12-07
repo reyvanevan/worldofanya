@@ -396,6 +396,7 @@
 
             try {
                 const posts = await getPosts(20);
+                allPosts = posts; // Store for modal access
                 
                 postsLoading.classList.add('hidden');
                 
@@ -436,21 +437,6 @@
             const isCarousel = post.type === 'carousel' && post.images && post.images.length > 1;
             const imageToShow = isCarousel ? post.images[0].url : post.imageBase64;
             
-            const postDataAttr = encodeURIComponent(JSON.stringify({
-                id: post.id,
-                imageBase64: post.imageBase64,
-                images: post.images || [],
-                type: post.type || 'photo',
-                authorAvatar: post.authorAvatar,
-                authorDisplayName: post.authorDisplayName,
-                authorName: post.authorName,
-                location: post.location || '',
-                caption: post.caption || '',
-                tags: post.tags || [],
-                likes: post.likes || 0,
-                createdAt: post.createdAt.toISOString()
-            }));
-            
             return `
                 <article class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden" data-aos="fade-up">
                     <div class="p-4 flex items-center justify-between">
@@ -466,7 +452,7 @@
                     </div>
 
                     <div class="relative aspect-square bg-slate-100 dark:bg-slate-800 cursor-pointer group" 
-                         onclick="openPhotoModal('${postDataAttr}')">
+                         onclick="openPhotoModal('${post.id}')">
                         <img src="${imageToShow}" class="w-full h-full object-cover hover:opacity-95 transition" loading="lazy">
                         
                         ${isCarousel ? `
@@ -596,11 +582,15 @@
         
         // Photo Modal Functions
         // Modal state for carousel
+        let allPosts = [];
         let modalCurrentPost = null;
         let modalCurrentImageIndex = 0;
         
-        window.openPhotoModal = function(encodedData) {
-            const post = JSON.parse(decodeURIComponent(encodedData));
+        window.openPhotoModal = function(postId) {
+            // Find the post by ID
+            const post = allPosts.find(p => p.id === postId);
+            if (!post) return;
+            
             modalCurrentPost = post;
             modalCurrentImageIndex = 0;
             
