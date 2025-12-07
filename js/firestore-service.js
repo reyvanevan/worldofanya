@@ -770,9 +770,9 @@ export async function updateLoveProgress(newProgress, note = '') {
         const currentData = docSnap.exists() ? docSnap.data() : { history: [], visitorCount: 0 };
         const history = currentData.history || [];
         
-        // Add to history
+        // Add to history - use Date instead of serverTimestamp for arrays
         history.push({
-            date: serverTimestamp(),
+            date: new Date(),
             value: newProgress,
             note: note || getMilestone(newProgress).message
         });
