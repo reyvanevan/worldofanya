@@ -505,7 +505,8 @@
             const delay = Math.min(index * 50, 300); // AOS delay
             
             // Post card
-            const hasImage = item.imageBase64 && item.imageBase64.length > 0;
+            const isCarouselPost = item.type === 'carousel' && item.images && item.images.length > 0;
+            const hasImage = (item.imageBase64 && item.imageBase64.length > 0) || isCarouselPost;
             const isNote = item.type === 'note' || !hasImage;
             
             if (isNote) {
