@@ -316,6 +316,31 @@
                     </div>
                 </div>
 
+                <!-- History Timeline Section -->
+                <div class="mt-8" data-aos="fade-up" data-aos-delay="200">
+                    <!-- Toggle Button -->
+                    <button onclick="toggleHistory()" id="historyToggleBtn"
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-slate-100/50 dark:bg-slate-800/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium transition-all group">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span>View Journey History</span>
+                        <i data-lucide="chevron-down" id="historyChevron" class="w-4 h-4 transition-transform group-hover:translate-y-0.5"></i>
+                    </button>
+
+                    <!-- History Timeline (Hidden by default) -->
+                    <div id="historyTimeline" class="hidden mt-6 overflow-hidden">
+                        <div class="glass-card rounded-2xl p-6 max-h-96 overflow-y-auto">
+                            <!-- Timeline Container -->
+                            <div id="historyList" class="space-y-6 relative">
+                                <!-- Timeline items will be inserted here by JS -->
+                                <div class="text-center py-8 text-slate-400 dark:text-slate-500">
+                                    <i data-lucide="loader-2" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+                                    <p class="text-sm">Loading history...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Extra Note -->
                 <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-6 italic" data-aos="fade-up"
                     data-aos-delay="200">
@@ -933,6 +958,107 @@
                 alert('Link berhasil disalin! 📋');
             }
         };
+
+        // Toggle history timeline
+        let historyLoaded = false;
+        window.toggleHistory = async function() {
+            const timeline = document.getElementById('historyTimeline');
+            const chevron = document.getElementById('historyChevron');
+            const isHidden = timeline.classList.contains('hidden');
+
+            if (isHidden) {
+                timeline.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+                
+                // Load history data on first open
+                if (!historyLoaded) {
+                    await loadHistoryTimeline();
+                    historyLoaded = true;
+                }
+            } else {
+                timeline.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        };
+
+        // Load and render history timeline
+        async function loadHistoryTimeline() {
+            try {
+                const progress = await getLoveProgress();
+                const history = progress.history || [];
+                const historyList = document.getElementById('historyList');
+
+                if (history.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="text-center py-8 text-slate-400 dark:text-slate-500">
+                            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2"></i>
+                            <p class="text-sm">No history yet</p>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                    return;
+                }
+
+                // Sort by date descending (newest first)
+                const sortedHistory = [...history].sort((a, b) => {
+                    const dateA = a.date?.toDate ? a.date.toDate() : new Date(a.date);
+                    const dateB = b.date?.toDate ? b.date.toDate() : new Date(b.date);
+                    return dateB - dateA;
+                });
+
+                // Render timeline items
+                historyList.innerHTML = sortedHistory.map((item, index) => {
+                    const date = item.date?.toDate ? item.date.toDate() : new Date(item.date);
+                    const value = item.value || 0;
+                    const note = item.note || '';
+                    const isLast = index === sortedHistory.length - 1;
+
+                    return `
+                        <div class="flex gap-4 relative">
+                            <!-- Timeline line -->
+                            ${!isLast ? '<div class="absolute left-5 top-12 w-0.5 h-full bg-gradient-to-b from-pink-300 to-transparent dark:from-pink-700"></div>' : ''}
+                            
+                            <!-- Timeline dot -->
+                            <div class="relative flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-pink-500/30 ring-4 ring-pink-100 dark:ring-pink-900/30">
+                                    ${value}%
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="flex-1 pb-6">
+                                <div class="glass-card rounded-xl p-4 hover:shadow-lg transition-shadow">
+                                    <div class="flex items-start justify-between gap-4 mb-2">
+                                        <div>
+                                            <h4 class="font-semibold text-slate-800 dark:text-white">
+                                                Update to ${value}%
+                                            </h4>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                                ${formatRelativeTime(date)}
+                                            </p>
+                                        </div>
+                                        ${value === 100 ? '<span class="text-2xl">🎉</span>' : value >= 75 ? '<span class="text-xl">💕</span>' : value >= 50 ? '<span class="text-xl">💗</span>' : value >= 25 ? '<span class="text-xl">💙</span>' : '<span class="text-xl">🤍</span>'}
+                                    </div>
+                                    ${note ? `<p class="text-sm text-slate-600 dark:text-slate-300 italic">"${note}"</p>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Failed to load history:', error);
+                const historyList = document.getElementById('historyList');
+                historyList.innerHTML = `
+                    <div class="text-center py-8 text-red-400">
+                        <i data-lucide="alert-circle" class="w-8 h-8 mx-auto mb-2"></i>
+                        <p class="text-sm">Failed to load history</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
 
         // Run on page load
         trackVisit();
