@@ -67,8 +67,18 @@
         <div class="absolute top-1/2 left-1/2 w-72 h-72 bg-purple-300 dark:bg-purple-900 rounded-full blur-3xl animate-pulse-slow"></div>
     </div>
 
-    <!-- Login Card -->
-    <div class="relative w-full max-w-md">
+    <!-- Loading Screen (shown first while checking auth) -->
+    <div id="authLoadingScreen" class="relative w-full max-w-md text-center">
+        <div class="w-16 h-16 bg-gradient-to-tr from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-pink-500/30 animate-pulse">
+            <i data-lucide="globe-2" class="w-8 h-8 text-white"></i>
+        </div>
+        <h1 class="text-slate-800 dark:text-white text-2xl font-bold mb-2">Universe</h1>
+        <p class="text-slate-600 dark:text-slate-300 text-lg font-medium">Authenticating...</p>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Checking session</p>
+    </div>
+
+    <!-- Login Card (hidden until auth check completes) -->
+    <div id="loginCardWrapper" class="hidden relative w-full max-w-md">
         <!-- Back Button -->
         <a href="../index.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-brand-accent dark:hover:text-brand-accentLight mb-6 transition-colors group">
             <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
@@ -161,8 +171,17 @@
 
         // Check if already logged in - auto redirect to home
         onAuthStateChanged(auth, (user) => {
+            const loadingScreen = document.getElementById('authLoadingScreen');
+            const loginCard = document.getElementById('loginCardWrapper');
+            
             if (user) {
+                // User has session, redirect to home
                 window.location.href = 'home.html';
+            } else {
+                // No session, show login form
+                loadingScreen.classList.add('hidden');
+                loginCard.classList.remove('hidden');
+                lucide.createIcons();
             }
         });
 
