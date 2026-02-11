@@ -45,9 +45,16 @@
         class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
 
-            <a href="home.html" class="p-2 -ml-2 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </a>
+            <div class="flex items-center gap-2">
+                <a href="home.html" class="p-2 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </a>
+                <button onclick="handleLogout()" 
+                    class="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition" 
+                    title="Logout">
+                    <i data-lucide="log-out" class="w-5 h-5 text-red-500"></i>
+                </button>
+            </div>
 
             <span class="font-bold text-lg">New Memory</span>
 
@@ -225,7 +232,18 @@
     <script type="module">
         import { auth } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { createPost, createStory, compressImageToBase64, USER_PROFILES, getCurrentAuthor, loadUserAvatarsFromFirestore, getAuthorAvatar } from '../js/firestore-service.js';
+        import { createPost, createStory, compressImageToBase64, USER_PROFILES, getCurrentAuthor, loadUserAvatarsFromFirestore, getAuthorAvatar, logout } from '../js/firestore-service.js';
+
+        // Global logout function
+        window.handleLogout = async function() {
+            if (confirm('Yakin mau logout?')) {
+                try {
+                    await logout();
+                } catch (error) {
+                    alert('Error logout: ' + error.message);
+                }
+            }
+        };
 
         // Check auth and set current user
         onAuthStateChanged(auth, async (user) => {

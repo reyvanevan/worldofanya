@@ -19,6 +19,7 @@ import {
     updateDoc,
     where
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { auth, db } from './firebase-config.js';
 
 // ==================== CONSTANTS ====================
@@ -820,5 +821,45 @@ export async function incrementVisitorCount() {
     } catch (error) {
         console.error('Error incrementing visitor count:', error);
         return 0;
+    }
+}
+
+// ==================== AUTH OPERATIONS ====================
+
+/**
+ * Logout current user and redirect to login
+ * @returns {Promise<void>}
+ */
+export async function logout() {
+    try {
+        await signOut(auth);
+        // Redirect to login page
+        window.location.href = '../universe/login.html';
+    } catch (error) {
+        console.error('Error signing out:', error);
+        throw error;
+    }
+}
+
+/**
+ * Check if user is authenticated
+ * @returns {Promise<boolean>}
+ */
+export function isAuthenticated() {
+    return new Promise((resolve) => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            unsubscribe();
+            resolve(!!user);
+        });
+    });
+}
+
+/**
+ * Redirect to login if not authenticated
+ */
+export async function requireAuth() {
+    const authenticated = await isAuthenticated();
+    if (!authenticated) {
+        window.location.href = '../universe/login.html';
     }
 }
