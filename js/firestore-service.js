@@ -4,6 +4,7 @@
  * Uses Base64 encoding for images (no Firebase Storage needed!)
  */
 
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
     addDoc,
     collection,
@@ -19,7 +20,6 @@ import {
     updateDoc,
     where
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { auth, db } from './firebase-config.js';
 
 // ==================== CONSTANTS ====================
